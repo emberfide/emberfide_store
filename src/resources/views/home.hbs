@@ -1,1 +1,18 @@
 <div class="banner"></div>
+<h1>COLLECTIONS</h1>
+<div class="container">
+<div class="row">
+    {{#each collections}}
+            <div class="col-4 align-items-stretch">
+                <a href= '/collections/{{this.name}}'>  
+                    <div class="card" style="">
+                        <img src="{{this.img}}" class="card-img-top" alt="{{this.name}}">
+                        <div class="card-body">
+                            <p class="card-text">{{this.name}}</p>
+                        </div>
+                    </div>
+                </a> 
+            </div>
+    {{/each}}
+</div>
+</div>

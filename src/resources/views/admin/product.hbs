@@ -1,0 +1,58 @@
+<div class="container mt-5 ">
+    <h1>Products</h1>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Create
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/admin/product">
+                    <div class="mb-3">
+                        <label for="collection" class="form-label" >collection</label>
+                        <select class="form-select" aria-label="Default select example" name="nameCollection">
+                            {{#each collections}}
+                                <option value="{{this.name}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="title" class="form-label" >Title</label>
+                        <input type="text" class="form-control" name='title' id="title" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="urlImg" class="form-label" >Url Img</label>
+                        <input type="text" class="form-control" name= 'urlImg' id="urlImg" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="realPrice" class="form-label" >Real Price</label>
+                        <input type="text" class="form-control" name= 'realPrice' id="realPrice" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="sellPrice" class="form-label" >Sell Price</label>
+                        <input type="text" class="form-control"  name= 'sellPrice' id="sellPrice" >
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    {{#each products}}
+        <ul class="my-5 list-group list-group-horizontal">
+            <li class=" list-group-item"><img height= 50 src="{{this.urlImg}}" alt=""></li>
+            <li class=" list-group-item">{{this.title}}</li>
+            <li class=" list-group-item">{{this.sellPrice}} - {{this.realPrice}}</li>
+        </ul>
+    {{/each}}
+    
+</div>

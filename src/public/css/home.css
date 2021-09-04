@@ -4,3 +4,7 @@
   padding-top: 42%;
   background-position: center;
   background-size: cover; }
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit; }

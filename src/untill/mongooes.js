@@ -4,6 +4,6 @@ module.exports = {
         return mongooess.map(mongooes =>  mongooes.toObject());
     },
     mongooesToObject: function(mongooes){
-        return mongooes.toObject();
+        return mongooes ? mongooes.toObject() : mongooes;
     }
 }
