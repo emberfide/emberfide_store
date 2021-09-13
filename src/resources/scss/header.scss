@@ -84,7 +84,8 @@ input[type=number]:focus,
 }
 .header__bottom ul .nav-item.menu-dropdown .flex-column{
     min-width: 150px;
-    background-color: #f2f2f2;
+    background-color: #fff;
+    z-index: 11;
 }
 .align-items-stretch{
     margin-top: 20px;

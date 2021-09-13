@@ -1,0 +1,15 @@
+<form class=''  method='POST' enctype="multipart/form-data">
+    <label for='file'>Select your image:</label>
+    <input type='file' multiple='multiple' accept='image/*' name='uploadedImages' id='file' />
+    <span class='hint'>Supported files: jpg, jpeg, png.</span>
+    <button type='submit'>upload</button>
+</form>
+<div class="container">
+    <div class="row">
+    {{#each imgs}}
+        <div class="col-3">
+            <img style="width: 100%;" src="\\{{this.path}}" alt="">
+        </div>
+    {{/each}}
+    </div>
+</div>

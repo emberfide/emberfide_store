@@ -1,17 +1,19 @@
-<h1>{{params}}</h1>
-<div class="container">
-<div class="row">
-    {{#each productsCollection}}
-            <div class="col-4 align-items-stretch">
-                <a href= '/collections/{{this.collection}}'>  
-                    <div class="card" style="">
-                        <img src="{{this.urlImg}}" class="card-img-top" alt="{{this.title}}">
-                        <div class="card-body">
-                            <p class="card-text">{{this.title}}</p>
-                            <p class="card-text">{{this.sellPrice}} - {{this.realPrice}}</p>
+<div class="container collectionPage">
+    <h1 class="my-4 collectionPage__title " >{{params}}</h1>
+    <div class="row">
+        {{#each productsCollection}}
+                <div class="col-4 align-items-stretch">
+                    <a href= '/products/{{this.slug}}'>  
+                        <div class="card" style="">
+                            <img src="{{this.urlImg}}" class="card-img-top" alt="{{this.title}}">
+                            <div class="card-body">
+                                <p class="card-text">{{this.title}}</p>
+                                <p class="card-text">{{this.sellPrice}} - {{this.realPrice}}</p>
+                                <div></div>
+                            </div>
                         </div>
-                    </div>
-                </a> 
-            </div>
-    {{/each}}
+                    </a> 
+                </div>
+        {{/each}}
+    </div>
 </div>
