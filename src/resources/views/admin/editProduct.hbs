@@ -1,0 +1,25 @@
+<form class="container mt-5" method="POST" action="/admin/update/product/{{product._id}}?_method=PUT" >
+    <div class="mb-3">
+        <label for="collection" class="form-label" >collection</label>
+        <select class="form-select" aria-label="Default select example" name="nameCollection">
+                <option value="{{product.nameCollection}}" selected hidden>{{product.nameCollection}}</option>
+            {{#each collections}}
+                <option value="{{this.name}}">{{this.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+    
+    <div class="mb-3">
+        <label for="title" class="form-label" >Title</label>
+        <input type="text" class="form-control" name='title' id="title" value="{{product.title}}" >
+    </div>
+    <div class="mb-3">
+        <label for="realPrice" class="form-label" >Real Price</label>
+        <input type="text" class="form-control" name= 'realPrice' id="realPrice" value={{product.realPrice}}>
+    </div>
+    <div class="mb-3">
+        <label for="sellPrice" class="form-label" >Sell Price</label>
+        <input type="text" class="form-control"  name= 'sellPrice' id="sellPrice" value={{product.sellPrice}}>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

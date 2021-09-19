@@ -1,4 +1,4 @@
-const { mutipleMongooesToObject } = require('../../untill/mongooes');
+const { mutipleMongooesToObject, mongooesToObject } = require('../../untill/mongooes');
 const Product = require('../models/Product');
 const Collection = require('../models/Collection');
 const UploadImg = require('../models/UploadImg');
@@ -15,41 +15,57 @@ class AdminController{
     //GET admin/product
     product(req, res){
         let arrayCollections = [];
+        let arrayImgs = [];
         Collection.find({})
-            .then(collections => {arrayCollections = mutipleMongooesToObject(collections)})
+            .then(collections => {arrayCollections = mutipleMongooesToObject(collections)});
+        UploadImg.find({})
+            .then(imgs => {arrayImgs = mutipleMongooesToObject(imgs)});
         Product.find({})
-            .then(products => res.render('admin/product',{products: mutipleMongooesToObject(products),collections: arrayCollections,layout: 'admin'}))
-        
+            .then(products => res.render('admin/product',{
+                products: mutipleMongooesToObject(products),
+                collections: arrayCollections,layout: 'admin',
+                imgs: arrayImgs,
+            }))
     }
     //GET admin/upload-img
     upload(req, res){
-        console.log
+        // console.log
         UploadImg.find({})
-            .then(imgs => {console.log(imgs); return res.render('admin/upload',{imgs: mutipleMongooesToObject(imgs),layout:'admin'})});
+            .then(imgs => { return res.render('admin/upload',{imgs: mutipleMongooesToObject(imgs),layout:'admin'})});
         // res.render('admin/upload',{layout: 'admin'});
+    }
+    //GET admin/update/product/:id
+    editProduct(req, res){
+        let collectionsToObject = [];
+        Collection.find({})
+            .then(collections => {collectionsToObject = mutipleMongooesToObject(collections)});
+        Product.findOne({_id: req.params.id})
+            .then(product => res.render('admin/editProduct',{
+                collections:collectionsToObject,
+                product: mongooesToObject(product),
+                layout:'admin',
+            }))
+    }
+
+    //PUT admin/update/product/:id
+    updateProduct(req, res, next){
+        Product.updateOne({_id: req.params.id}, req.body)
+            .then(() => res.redirect('/admin/product'))
+            .catch(next);
     }
 
     //POST admin/product
     createProduct(req, res){
-        const file = req.file.path;
-        req.body.urlImg = file.split('\\').slice(2).join('/');
         const product = new Product(req.body);
-        console.log(req.body);
         product.save()
             .then(() => res.redirect('/admin/product'))
-        // res.json(req.body);
-
     }
     //POST admin/upload-img
     uploadImg(req, res){
-        // const uploadImg = new UploadImg(req.files)
-        // UploadImg.map((img => img.path))\
-
         var files = req.files.map(file => {
             var obj = {path:file.path.split('\\').slice(2).join('\\')}
             return obj;
         })
-        console.log(files);
         UploadImg.insertMany(files, function(err) {
             res.redirect('/admin/upload-img')
         });

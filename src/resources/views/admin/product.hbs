@@ -37,9 +37,37 @@
                         <label for="sellPrice" class="form-label" >Sell Price</label>
                         <input type="text" class="form-control"  name= 'sellPrice' id="sellPrice" >
                     </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Default file input example</label>
-                        <input class="form-control" type="file" id="formFile" name= 'img'>
+                    <!-- Button upload img modal -->
+                    {{!-- <input class="url-img" class="form-control" name="urlImg" type="text"> --}}
+                    <div class="input-img"></div>
+                    <button type="button" class="btn btn-primary d-block mb-3" data-bs-toggle="modal" data-bs-target="#upload-img-modal">
+                    IMG
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="upload-img-modal" tabindex="-1" aria-labelledby="upload-img-modal" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="upload-img-modal">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div></div>
+                                <div class="row">
+                                    {{#each imgs}}
+                                        <div class="col-3 upload-img">
+                                            <img style="width: 100%;" src="\\{{this.path}}" alt="">
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary close-upload-img" data-bs-dismiss="modal">Close</button>
+                                <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
+                                <button type="button" class="btn btn-primary import-img">Save</button>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -47,12 +75,31 @@
             </div>
         </div>
     </div>
-    {{#each products}}
-        <ul class="my-5 list-group list-group-horizontal">
-            <li class=" list-group-item"><img height= 50 src="\\{{this.urlImg}}" alt=""></li>
-            <li class=" list-group-item">{{this.title}}</li>
-            <li class=" list-group-item">{{this.sellPrice}} - {{this.realPrice}}</li>
-        </ul>
-    {{/each}}
-    
+        <table class="table align-middle text-center">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Img</th>
+                <th scope="col">Name</th>
+                <th scope="col">Sell Price</th>
+                <th scope="col">Real Price</th>
+                <th scope="col">Fix</th>
+                <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td><img src={{this.urlImg0}} height=100 alt=""></td>
+                <td>{{this.title}}</td>
+                <td>{{this.sellPrice}}</td>
+                <td>{{this.realPrice}}</td>
+                <td><a href="/admin/update/product/{{this._id}}">Fix</a></td>
+                <td><a href="#">Delete</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
 </div>
+<script src="/js/page/uploadImg.js"></script>
