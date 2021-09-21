@@ -2,10 +2,12 @@
     <h1>Products</h1>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Create
-    </button>
-
+    <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create
+        </button>
+        <a class="float-end" href="/admin/trash/product">Trash</a>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -83,7 +85,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Sell Price</th>
                 <th scope="col">Real Price</th>
-                <th scope="col">Fix</th>
+                <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
                 </tr>
             </thead>
@@ -95,11 +97,51 @@
                 <td>{{this.title}}</td>
                 <td>{{this.sellPrice}}</td>
                 <td>{{this.realPrice}}</td>
-                <td><a href="/admin/update/product/{{this._id}}">Fix</a></td>
-                <td><a href="#">Delete</a></td>
+                <td><a href="/admin/update/product/{{this._id}}" class="btn btn-primary">Edit</a></td>
+                <td><a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-delete-product"  data-bs-id="{{this._id}}">Delete</a></td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="7">Bạn chưa có sản phẩm nào</td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
 </div>
+{{!-- moadal comfirm detele product --}}
+
+<div class="modal fade" id="modal-delete-product" tabindex="-1" aria-labelledby="modal-delete-productLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-delete-productLabel">Delete Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger accept-delete-product">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<form name="delete-product-form" method="POST"  ></form>
 <script src="/js/page/uploadImg.js"></script>
+<script>
+    var confirmDeleteProduct = document.getElementById('modal-delete-product');
+    let id;
+    confirmDeleteProduct.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    id = button.getAttribute('data-bs-id');
+    formDelete = document.forms['delete-product-form']
+    const accept = document.querySelector('.accept-delete-product');
+    accept.onclick = function() {
+        formDelete.action = `/admin/delete/product/${id}?_method=DELETE`;
+        formDelete.submit();
+    }
+    })
+</script>

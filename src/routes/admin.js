@@ -9,11 +9,19 @@ const adminController = require('../app/controllers/AdminController');
 router.get('/product', adminController.product);
 router.get('/upload-img', adminController.upload);
 router.get('/update/product/:id', adminController.editProduct);
+router.get('/trash/product', adminController.trashProduct);
+
 
 router.post('/product',upload.single('img'), adminController.createProduct);
 router.post('/upload-img',upload.array('uploadedImages', 10), adminController.uploadImg);
 
 router.put('/update/product/:id', adminController.updateProduct);
+router.patch('/restore/product/:id', adminController.restoreProduct);
+
+router.delete('/delete/product/:id', adminController.deleteProduct);
+router.delete('/force/delete/product/:id', adminController.forceDeleteProduct);
+
+
 
 
 

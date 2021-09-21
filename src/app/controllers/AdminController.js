@@ -46,11 +46,34 @@ class AdminController{
                 layout:'admin',
             }))
     }
+    trashProduct(req,res,next){
+        Product.findDeleted({})
+            .then(products => res.render('admin/trashProduct',{products: mutipleMongooesToObject(products),layout:'admin'}))
+            .catch(next);
+    }
 
     //PUT admin/update/product/:id
     updateProduct(req, res, next){
         Product.updateOne({_id: req.params.id}, req.body)
             .then(() => res.redirect('/admin/product'))
+            .catch(next);
+    }
+
+    //PATCH admin/restore/product:id
+    restoreProduct(req, res, next){
+        Product.restore({_id: req.params.id})
+            .then(() => res.redirect('back'))
+    }
+    //DELETE admin/delete/product:id
+    deleteProduct(req, res, next){
+        Product.delete({_id: req.params.id})
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    //DELETE admin/force/delete/product/:id
+    forceDeleteProduct(req, res, next){
+        Product.deleteOne({_id: req.params.id})
+            .then(() => res.redirect('back'))
             .catch(next);
     }
 

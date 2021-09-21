@@ -1,0 +1,87 @@
+<div class="container">
+    <a href="/admin/product" class=" mt-5 btn btn-primary">Product</a>
+</div>
+<table class="table align-middle text-center container mt-5">
+    <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Img</th>
+        <th scope="col">Name</th>
+        <th scope="col">Sell Price</th>
+        <th scope="col">Real Price</th>
+        <th scope="col">Restore</th>
+        <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+        <th scope="row">{{sum @index 1}}</th>
+        <td><img src={{this.urlImg0}} height=100 alt=""></td>
+        <td>{{this.title}}</td>
+        <td>{{this.sellPrice}}</td>
+        <td>{{this.realPrice}}</td>
+        <td><a href="" class="btn btn-primary btn-restore " data-id="{{this._id}}">Restore</a></td>
+        <td><a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-force-delete-product"  data-bs-id="{{this._id}}">Force Delete</a></td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="7">Bạn chưa có sản phẩm nào</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<form name="restore-product-form" method="POST"  ></form>
+<form name="force-delete-product-form" method="POST"  ></form>
+
+
+{{!-- moadal comfirm detele product --}}
+
+<div class="modal fade" id="modal-force-delete-product" tabindex="-1" aria-labelledby="modal-force-delete-productLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-force-delete-productLabel">Force Delete Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger accept-force-delete-product">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+        //restore product
+        const restoreBtns = document.querySelectorAll('.btn-restore');
+        const restoreForm = document.forms['restore-product-form'];
+        restoreBtns.forEach((restoreBtn) => {
+            restoreBtn.onclick = function (e) {
+                e.preventDefault();
+                console.log(this.getAttribute("data-id"));
+                const id = this.getAttribute("data-id"); 
+                restoreForm.action = `/admin/restore/product/${id}?_method=PATCH`;
+                restoreForm.submit();
+            }
+        })
+
+        //force delete product
+        var confirmDeleteProduct = document.getElementById('modal-force-delete-product');
+        let id;
+        confirmDeleteProduct.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        id = button.getAttribute('data-bs-id');
+        formForceDelete = document.forms['force-delete-product-form']
+        const accept = document.querySelector('.accept-force-delete-product');
+        accept.onclick = function() {
+            formForceDelete.action = `/admin/force/delete/product/${id}?_method=DELETE`;
+            formForceDelete.submit();
+        }
+        })
+</script>
