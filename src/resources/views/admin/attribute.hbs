@@ -1,0 +1,193 @@
+<div class="container">
+    <!-- Button trigger modal attribute create -->
+    <button type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#modal-create-attribute">
+        Create Attribute
+    </button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Element</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Add/Edit Element Attribute</th>
+            </tr>
+        </thead>
+        {{#each attributes}}
+            <tbody>
+                <tr class="align-middle">
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.typeAttribute}}</td>
+                    <td>
+                        {{#each this.nameElement}}
+                            <span class="me-1">{{this}}</span>
+                        {{/each}}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" 
+                        data-bs-toggle="modal"  
+                        data-bs-id={{this._id}}
+                        data-bs-name="{{this.name}}" 
+                        data-bs-type={{this.typeAttribute}} 
+                        data-bs-target="#editAttributeModal">
+                        Edit
+                        </button>
+                    </td>
+                    <td>
+                        <!-- Button trigger modal confirm delete attribute -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#deleteAttributeModal">
+                        Delete
+                        </button>
+                    </td>
+                    <td><a href="/admin/attribute/{{this._id}}" class="btn btn-primary">Add/Edit Element Attribute</a></td>
+                </tr>
+            </tbody>
+        {{/each}}
+    </table>
+    <form method="POST" name="delete-attribute-form" class="form-delete-attribute" action=""></form>
+    <!-- Modal attribute create -->
+    <div class="modal fade" id="modal-create-attribute" tabindex="-1" aria-labelledby="modal-create-attributeLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-create-attributeLabel">CREATE ATTRIBUTE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" method="POST" action="/admin/attribute/create">
+                        <div class="form-group">
+                            <label for="name-attribute">Name</label>
+                            <input type="text" class="form-control" name="name" id="name-attribute">
+                        </div>
+                        <label class="my-2">Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="typeAttribute" value="button" id="typeAttributeButton" checked>
+                            <label class="form-check-label" for="typeAttributeButton">
+                                Button
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="typeAttribute" value="img" id="typeAttributeImg">
+                            <label class="form-check-label" for="typeAttributeImg">
+                                Image
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal delete attribute-->
+    <div class="modal fade" id="deleteAttributeModal" tabindex="-1" aria-labelledby="deleteAttributeModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAttributeModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary confirm-delete-attribute">Yes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal edit attribute -->
+    <div class="modal fade" id="editAttributeModal" tabindex="-1" aria-labelledby="editAttributeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAttributeModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="edit-attribute-form form-edit-attribute" name="edit-attribute-form" method="POST" action="">
+                    <div class="form-group">
+                        <label for="edit-name-attribute">Name</label>
+                        <input type="text" class="form-control" name="name" id="edit-name-attribute">
+                    </div>
+                    <label class="my-2">Type</label>
+                    <div class="form-check">
+                        <input class="form-check-input form-check-input-attribute-type" type="radio" name="typeAttribute" value="button" id="editTypeAttributeButton">
+                        <label class="form-check-label" for="editTypeAttributeButton">
+                            Button
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input form-check-input-attribute-type" type="radio" name="typeAttribute" value="img" id="editTypeAttributeImg" >
+                        <label class="form-check-label" for="editTypeAttributeImg">
+                            Image
+                        </label>
+                    </div>
+                    <button class="btn btn-primary mt-3 confirm-edit-attribute">Update</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //handle modal comfirm delete attribute
+    var confirmDeleteAttribute = document.querySelector('.confirm-delete-attribute');
+    var deleteAttributeModal = document.getElementById('deleteAttributeModal');
+    var formDeleteAttribute = document.forms['delete-attribute-form'];
+    deleteAttributeModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-id* attributes
+    var id = button.getAttribute('data-bs-id')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    confirmDeleteAttribute.onclick = function(){
+        formDeleteAttribute.action = `/admin/attribute/delete/${id}?_method=DELETE`;
+        formDeleteAttribute.submit();
+    }
+    })
+
+    //handle modal edit attribute
+
+    var confirmEditAttribute = document.querySelector('.confirm-edit-attribute');
+    var editAttributeModal = document.getElementById('editAttributeModal');
+    var formEditAttribute = document.forms['edit-attribute-form'];
+    var typeAttributeEditForm = document.querySelectorAll('.edit-attribute-form .form-check-input-attribute-type')
+    editAttributeModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-id* attributes
+    var id = button.getAttribute('data-bs-id');
+    var name = button.getAttribute('data-bs-name');
+    var type = button.getAttribute('data-bs-type');
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    console.log(name);
+    console.log(type)
+    document.querySelector('#edit-name-attribute').value = name;
+    for(var i=0;i < typeAttributeEditForm.length; i++){
+        if(typeAttributeEditForm[i].value == type){
+            typeAttributeEditForm[i].checked = true;
+        }
+    }
+    formEditAttribute.action = `/admin/attribute/edit/${id}?_method=PUT`;
+
+    
+    
+    })
+
+</script>

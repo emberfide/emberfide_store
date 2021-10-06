@@ -1,86 +1,30 @@
 <div class="container mt-5 ">
     <h1>Products</h1>
-
-    <!-- Button trigger modal -->
+    <!-- Button modal create -->
     <div>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Create
         </button>
-        <a class="float-end" href="/admin/trash/product">Trash</a>
+        <a class="float-end btn btn-primary" href="/admin/trash/product">Trash({{count}})</a>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="/admin/product" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="collection" class="form-label" >collection</label>
-                        <select class="form-select" aria-label="Default select example" name="nameCollection">
-                            {{#each collections}}
-                                <option value="{{this.name}}">{{this.name}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="title" class="form-label" >Title</label>
-                        <input type="text" class="form-control" name='title' id="title" >
-                    </div>
-                    <div class="mb-3">
-                        <label for="realPrice" class="form-label" >Real Price</label>
-                        <input type="text" class="form-control" name= 'realPrice' id="realPrice" >
-                    </div>
-                    <div class="mb-3">
-                        <label for="sellPrice" class="form-label" >Sell Price</label>
-                        <input type="text" class="form-control"  name= 'sellPrice' id="sellPrice" >
-                    </div>
-                    <!-- Button upload img modal -->
-                    {{!-- <input class="url-img" class="form-control" name="urlImg" type="text"> --}}
-                    <div class="input-img"></div>
-                    <button type="button" class="btn btn-primary d-block mb-3" data-bs-toggle="modal" data-bs-target="#upload-img-modal">
-                    IMG
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="upload-img-modal" tabindex="-1" aria-labelledby="upload-img-modal" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="upload-img-modal">Modal title</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div></div>
-                                <div class="row">
-                                    {{#each imgs}}
-                                        <div class="col-3 upload-img">
-                                            <img style="width: 100%;" src="\\{{this.path}}" alt="">
-                                        </div>
-                                    {{/each}}
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary close-upload-img" data-bs-dismiss="modal">Close</button>
-                                <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
-                                <button type="button" class="btn btn-primary import-img">Save</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-            </div>
+    <!-- Modal create -->
+    {{> adminCreateProduct}}
+    <form name="form-action-checkbox" method="POST" action="/admin/action/product" >
+        <div class="form-check my-3 d-flex align-items-center">
+            <input class="form-check-input" type="checkbox" value="" id="check-all-product">
+            <label class="form-check-label" for="check-all-product">
+                Select All
+            </label>
+            <select class="form-select w-25 mx-4 " required name="action" aria-label="Default select example">
+                <option value="" selected>Action</option>
+                <option value="delete">Delete</option>
+            </select>
+            <button type="submit" class="submit-action-checkbox btn btn-primary disabled">Apply</button>
         </div>
-    </div>
         <table class="table align-middle text-center">
             <thead>
                 <tr>
-                <th scope="col">#</th>
+                <th scope="col" colspan="2">#</th>
                 <th scope="col">Img</th>
                 <th scope="col">Name</th>
                 <th scope="col">Sell Price</th>
@@ -92,8 +36,13 @@
             <tbody>
                 {{#each products}}
                 <tr>
+                <td>
+                    <div class="form-check my-3">
+                        <input class="form-check-product-input" name="productIds[]" type="checkbox" value="{{this._id}}" >
+                    </div>
+                </td>
                 <th scope="row">{{sum @index 1}}</th>
-                <td><img src={{this.urlImg0}} height=100 alt=""></td>
+                <td><img src={{this.urlImg}} height=100 alt=""></td>
                 <td>{{this.title}}</td>
                 <td>{{this.sellPrice}}</td>
                 <td>{{this.realPrice}}</td>
@@ -102,11 +51,12 @@
                 </tr>
                 {{else}}
                 <tr>
-                    <td colspan="7">Bạn chưa có sản phẩm nào</td>
+                    <td colspan="8">Bạn chưa có sản phẩm nào</td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
+    </form>
 </div>
 {{!-- moadal comfirm detele product --}}
 
@@ -134,14 +84,42 @@
     let id;
     confirmDeleteProduct.addEventListener('show.bs.modal', function (event) {
     // Button that triggered the modal
-    var button = event.relatedTarget
+    var button = event.relatedTarget;
     // Extract info from data-bs-* attributes
     id = button.getAttribute('data-bs-id');
-    formDelete = document.forms['delete-product-form']
+    formDelete = document.forms['delete-product-form'];
     const accept = document.querySelector('.accept-delete-product');
     accept.onclick = function() {
         formDelete.action = `/admin/delete/product/${id}?_method=DELETE`;
         formDelete.submit();
     }
     })
+    document.addEventListener('DOMContentLoaded', function()  {
+        const checkAllProduct = $('#check-all-product');
+        const checkProduct = $('.form-check-product-input');
+        const inputCheckbox = $('input[type="checkbox"]');
+        const submitActionCheckbox = $('.submit-action-checkbox');
+        const formActionCheckbox = $('form[name="form-action-checkbox"]');
+
+        console.log(formActionCheckbox)
+        //handle checkbox
+        checkAllProduct.change(function() {
+            const isCheckAllProduct = checkAllProduct.prop('checked');
+            checkProduct.prop('checked', isCheckAllProduct);
+        })
+        checkProduct.change(function() {
+            const isCheckAllProduct = $('input[name="productIds[]"]:checked').length === checkProduct.length;
+            checkAllProduct.prop('checked', isCheckAllProduct);
+        })
+        //handle disable submit
+        inputCheckbox.change(function(){
+            if($('input[type="checkbox"]:checked').length == 0){
+                submitActionCheckbox.addClass('disabled');
+            }
+            else{
+                submitActionCheckbox.removeClass('disabled');
+            }
+        })
+
+        })
 </script>

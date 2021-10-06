@@ -2,6 +2,7 @@ const { mutipleMongooesToObject, mongooesToObject } = require('../../untill/mong
 const Product = require('../models/Product');
 const Collection = require('../models/Collection');
 const UploadImg = require('../models/UploadImg');
+const Attribute = require('../models/Attribute');
 
 
 
@@ -13,19 +14,18 @@ class AdminController{
     }
 
     //GET admin/product
-    product(req, res){
-        let arrayCollections = [];
-        let arrayImgs = [];
-        Collection.find({})
-            .then(collections => {arrayCollections = mutipleMongooesToObject(collections)});
-        UploadImg.find({})
-            .then(imgs => {arrayImgs = mutipleMongooesToObject(imgs)});
-        Product.find({})
-            .then(products => res.render('admin/product',{
-                products: mutipleMongooesToObject(products),
-                collections: arrayCollections,layout: 'admin',
-                imgs: arrayImgs,
-            }))
+    product(req, res,next){
+        Promise.all([Collection.find({}),UploadImg.find({}),Product.find({}),Product.countDocumentsDeleted({})])
+            .then(([collections,imgs,products,count]) => {
+                res.render('admin/product',{
+                    products: mutipleMongooesToObject(products),
+                    collections: mutipleMongooesToObject(collections),
+                    imgs: mutipleMongooesToObject(imgs),
+                    count,
+                    layout: 'admin',
+                })
+            })
+            .catch(next);
     }
     //GET admin/upload-img
     upload(req, res){
@@ -46,6 +46,7 @@ class AdminController{
                 layout:'admin',
             }))
     }
+    //GET admin/trash/product
     trashProduct(req,res,next){
         Product.findDeleted({})
             .then(products => res.render('admin/trashProduct',{products: mutipleMongooesToObject(products),layout:'admin'}))
@@ -92,6 +93,70 @@ class AdminController{
         UploadImg.insertMany(files, function(err) {
             res.redirect('/admin/upload-img')
         });
+    }
+    //POST admin/action/product
+    actionProduct(req,res,next){
+        Product.delete({_id: req.body.productIds})
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    //POST admin/action/trash-product
+    actionTrashProduct(req,res,next){
+        switch(req.body.action){
+            case 'restore':
+                Product.restore({_id: req.body.trashProductIds})
+                    .then(() => res.redirect('back'))
+                break;
+            case 'delete':
+                Product.deleteMany({_id: req.body.trashProductIds})
+                    .then(() => res.redirect('back'))
+                break;
+            default:
+                res.json({message:'error'});
+        }
+    }
+    //GET admin/attribute
+    attribute(req, res,next){
+        Attribute.find({})
+            .then((attributes) => res.render('admin/attribute',
+            {
+                attributes:mutipleMongooesToObject(attributes),
+                layout:'admin.hbs'
+            }))
+    }
+    //POST admin/attribute/create
+    createAttribute(req, res,next){
+        const attribute = new Attribute(req.body);
+        attribute.save()
+            .then(() => res.redirect('/admin/attribute'))
+    }
+    //GET admin/attribute/:id
+    attributeElement(req, res,next){
+        Attribute.findOne({_id:req.params.id})
+            .then((attribute) => res.render('admin/attributeElement',
+            {
+                attribute: mongooesToObject(attribute),
+                layout:'admin.hbs'
+            }))
+            .catch(next)
+    }
+    //POST admin/attribute/:id/create
+    createAttributeElement(req, res,next){
+        Attribute.updateOne({_id: req.params.id},req.body)
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    //DELETE admin/attribute/:id
+    deleteAttribute(req, res, next){
+        Attribute.deleteOne({_id: req.params.id})
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    // PUT admin/attribute/edit/:id
+    editAttribute(req, res, next){
+        Attribute.updateOne({_id: req.params.id}, req.body)
+            .then(() => res.redirect('back'))
+            .catch(next);
     }
 }
 

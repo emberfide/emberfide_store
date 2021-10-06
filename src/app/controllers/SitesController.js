@@ -1,19 +1,21 @@
 const { mutipleMongooesToObject } = require('../../untill/mongooes');
-const collection = require('../models/Collection');
+const Collection = require('../models/Collection');
+const Product = require('../models/Product');
 
                             
 class SiteController{
     home(req, res, next){
-        
-        // res.render('home');
-        collection.find({})
-            .then(collections =>{ 
-                // const objectCollections = mutipleMongooesToObject(collections);
-                // const vikingCollection = objectCollections.filter(objectCollection => objectCollection.name == 'viking');
-                return res.render('home', {collections: mutipleMongooesToObject(collections)})
-            })
-            // .then( collections => res.json({collections}))
-            .catch(next)
+        // req.session.isAuth = true;
+        // if(res.locals.cart !== undefined){
+        // console.log(res.locals.cart);
+        // }
+        Promise.all([Collection.find({}),Product.find({})])
+            .then(([collections,products]) =>
+                res.render('home',{
+                    collections:mutipleMongooesToObject(collections),
+                    products:mutipleMongooesToObject(products),
+                })
+            )
     }
 }
 

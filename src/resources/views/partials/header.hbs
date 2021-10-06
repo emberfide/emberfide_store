@@ -1,4 +1,4 @@
-<div class="header">
+	<div class="header">
 	<div class="header__top"><span>FREE SHIPPING ON ORDERS OVER $150</span></div>
 	<div class="header__main container">
 		<div class="input-group mb-3 top-search header__main-item">
@@ -14,16 +14,19 @@
 				<img src="/img/logo.png" alt="" width="200">
 			</div>
 		</a>
-		<div class="header__main__cartCheckout header__main-item">
-			<div class="header__main__cartCheckout__container">
-				<svg xmlns="http://www.w3.org/2000/svg"  height="38" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
-					<path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708z"/>
-				</svg>
-			<p>YOUR CART</p>
+		<div class="header__main__cartCheckout header__main-item" role="button" data-bs-toggle="modal" data-bs-target="#header__cart__modal">
+			<div class="header__main__cartCheckout__container" >
+				<div class="header__main__cart d-flex align-items-center justify-content-center">
+					<svg xmlns="http://www.w3.org/2000/svg"  height="38" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+						<path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+					</svg>
+					<span>({{countCart}})</span>
+				</div>
+				<p>YOUR CART</p>
 			</div>
 		</div>
 	</div>
-  <div class="header__bottom">
+	<div class="header__bottom">
 	<ul class="nav justify-content-center">
 		<li class="nav-item">
 			<a class="nav-link active" aria-current="page" href="/">HOME</a>
@@ -56,7 +59,44 @@
 			<a class="nav-link" href="#">WATCHES</a>
 		</li>
 	</ul>
-	
 	</div>
-</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="header__cart__modal" tabindex="-1" aria-labelledby="header__cart__modalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+		<h5 class="modal-title" id="header__cart__modalLabel">Modal title</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<table class="table">
+				<tbody>
+					{{#each cart}}
+					<tr>
+					<td>
+						<img src={{this.urlImg0}} class="img-thumbnail" alt="...">
+					</td>
+					<td>
+						{{this.title}}
+					</td>
+					<td>
+						{{this.sellPrice}}
+					</td>
+					<td>
+						{{this.count}}
+					</td>
+					</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary">Save changes</button>
+		</div>
+	</div>
+	</div>
+	</div>
+
 

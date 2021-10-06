@@ -1,20 +1,41 @@
-<div class="home">
+<div class="home ">
     <div class="banner"></div>
-    <h1 class="my-5 home__title">COLLECTIONS</h1>
-    <div class="container">
-        <div class="row">
-            {{#each collections}}
-                    <div class="col-4 align-items-stretch">
-                        <a href= '/collections/{{this.name}}'>  
-                            <div class="card active" style="">
-                                <img src="{{this.img}}" class="card-img-top" alt="{{this.name}}">
-                                <div class="card-body">
-                                    <p class="card-text">{{this.name}}</p>
+    <div class="home__collection container">
+        <h1 class="my-5 home__title">COLLECTIONS</h1>
+        <div class="">
+            <div class="row text-center">
+                {{#each collections}}
+                        <div class="col-4 align-items-stretch">
+                            <a href= '/collections/{{this.name}}'>  
+                                <div class="card active" style="">
+                                    <img src="{{this.img}}" class="card-img-top" alt="{{this.name}}">
+                                    <div class="card-body">
+                                        <p style="font-size: 25px; font-weight:600" class="card-text">{{this.name}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a> 
+                            </a> 
+                        </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="home__product container">
+        <div class="home__best-seller">
+            <h1 class="label-best-seller text-center my-5">Best Selling</h1>   
+            <div class="row text-center box-product">
+                {{#each products}}
+                    <div class="col-sm-6 col-md-3">
+                        <div class="thumbnail">
+                        <img src="{{this.urlImg}}" alt="{{this.title}}" style="width: 100%;">
+                        <div class="caption my-3">
+                            <h3 style="font-size: 16px; font-weight:600">{{this.title}}</h3>
+                            <p style="font-size: 20px; font-weight:600">{{this.sellPrice}} - <del>{{this.realPrice}}</del></p>
+                            <p class="mx-3"><a style="width: 100%;" href="products/{{this.slug}}" class="btn btn-primary" role="button">Add To Cart</a></p>
+                        </div>
+                        </div>
                     </div>
-            {{/each}}
+                {{/each}}
+            </div>
         </div>
     </div>
 </div>

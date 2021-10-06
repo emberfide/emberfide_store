@@ -18,7 +18,7 @@ a, a:hover, a:focus, a:active {
   font-weight: bold;
   text-transform: uppercase; }
 
-.product-info .add-to-cart button {
+.product-info .add-to-cart a {
   width: 100%;
   padding: 12px; }
 
@@ -60,6 +60,9 @@ a, a:hover, a:focus, a:active {
 
 .product-info .banner-safe-scure img {
   width: 100%; }
+
+.active-gallery-img {
+  border: 3px solid #000; }
 
 .active-img {
   border: 3px solid #000; }

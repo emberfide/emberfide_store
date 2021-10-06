@@ -1,36 +1,55 @@
 <div class="container">
     <a href="/admin/product" class=" mt-5 btn btn-primary">Product</a>
 </div>
-<table class="table align-middle text-center container mt-5">
-    <thead>
-        <tr>
-        <th scope="col">#</th>
-        <th scope="col">Img</th>
-        <th scope="col">Name</th>
-        <th scope="col">Sell Price</th>
-        <th scope="col">Real Price</th>
-        <th scope="col">Restore</th>
-        <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each products}}
-        <tr>
-        <th scope="row">{{sum @index 1}}</th>
-        <td><img src={{this.urlImg0}} height=100 alt=""></td>
-        <td>{{this.title}}</td>
-        <td>{{this.sellPrice}}</td>
-        <td>{{this.realPrice}}</td>
-        <td><a href="" class="btn btn-primary btn-restore " data-id="{{this._id}}">Restore</a></td>
-        <td><a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-force-delete-product"  data-bs-id="{{this._id}}">Force Delete</a></td>
-        </tr>
-        {{else}}
-        <tr>
-            <td colspan="7">Bạn chưa có sản phẩm nào</td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+<form name="form-action-checkbox" method="POST" action="/admin/action/trash-product" >
+	<div class="form-check my-3 d-flex align-items-center container">
+		<input class="form-check-input" type="checkbox" value="" id="check-all-trash-product">
+		<label class="form-check-label" for="check-all-product">
+			Select All
+		</label>
+		<select class="form-select w-25 mx-4 " required name="action" aria-label="Default select example">
+			<option value="" selected>Action</option>
+			<option value="restore">Restore</option>
+			<option value="delete">Delete</option>
+		</select>
+		<button type="submit" class="submit-action-checkbox btn btn-primary disabled" >Apply</button>
+	</div>
+	<table class="table align-middle text-center container mt-5">
+		<thead>
+			<tr>
+			<th scope="col" colspan="2">#</th>
+			<th scope="col">Img</th>
+			<th scope="col">Name</th>
+			<th scope="col">Sell Price</th>
+			<th scope="col">Real Price</th>
+			<th scope="col">Restore</th>
+			<th scope="col">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each products}}
+			<tr>
+			<td>
+				<div class="form-check my-3">
+					<input class="form-check-trash-product-input" name="trashProductIds[]" type="checkbox" value="{{this._id}}" >
+				</div>
+			</td>
+			<th scope="row">{{sum @index 1}}</th>
+			<td><img src={{this.urlImg}} height=100 alt=""></td>
+			<td>{{this.title}}</td>
+			<td>{{this.sellPrice}}</td>
+			<td>{{this.realPrice}}</td>
+			<td><a href="" class="btn btn-primary btn-restore " data-id="{{this._id}}">Restore</a></td>
+			<td><a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-force-delete-product"  data-bs-id="{{this._id}}">Force Delete</a></td>
+			</tr>
+			{{else}}
+			<tr>
+				<td colspan="8">Bạn chưa có sản phẩm nào</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</form>
 <form name="restore-product-form" method="POST"  ></form>
 <form name="force-delete-product-form" method="POST"  ></form>
 
@@ -84,4 +103,30 @@
             formForceDelete.submit();
         }
         })
+		//
+		document.addEventListener('DOMContentLoaded',function() {
+			const checkAllTrashProduct = $('#check-all-trash-product');
+			const checkTrashProduct = $('.form-check-trash-product-input');
+			const inputCheckbox = $('input[type="checkbox"]');
+			const submitActionCheckbox = $('.submit-action-checkbox');
+			const formActionCheckbox = $('form[name="form-action-checkbox"]');
+			//handle checkbox
+			checkAllTrashProduct.change(function() {
+            const isCheckAllTrashProduct = checkAllTrashProduct.prop('checked');
+            checkTrashProduct.prop('checked', isCheckAllTrashProduct);
+			})
+			checkTrashProduct.change(function() {
+				const isCheckAllTrashProduct = $('input[name="trashProductIds[]"]:checked').length === checkTrashProduct.length;
+				checkAllTrashProduct.prop('checked', isCheckAllTrashProduct);
+			})
+			inputCheckbox.change(function(){
+            if($('input[type="checkbox"]:checked').length == 0){
+                submitActionCheckbox.addClass('disabled');
+            }
+            else{
+                submitActionCheckbox.removeClass('disabled');
+            }
+        	})
+			
+		})
 </script>

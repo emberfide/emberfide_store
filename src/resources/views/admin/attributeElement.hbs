@@ -1,0 +1,51 @@
+<div class="container text-capitalize">
+    <h2 class="my-5">Attribute: {{attribute.name}}</h2>
+    <!-- Button trigger modal create attribute element -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-create-attribute-element">
+    Create
+    </button>
+
+    <table class="table">
+        <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                </tr>
+        </thead>
+        {{#each attribute.nameElement}}
+            <tbody>
+                <tr class="align-middle">
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this}}</td>
+                </tr>
+            </tbody>
+        {{/each}}
+    </table>
+
+    <!-- Modal create attribute element -->
+    <div class="modal fade" id="modal-create-attribute-element" tabindex="-1" aria-labelledby="modal-create-attribute-elementLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal-create-attribute-elementLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="form-inline" method="POST" action="/admin/attribute/{{attribute._id}}/create">
+                <div class="form-group">
+                    {{#each attribute.nameElement}}
+                        <input type="hidden" class="form-control" name="nameElement[]" value={{this}}>
+                    {{/each}}
+                    <label for="name-attribute-element">Name</label>
+                    <input type="text" class="form-control" name="nameElement[]" id="name-attribute-element">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Create</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>

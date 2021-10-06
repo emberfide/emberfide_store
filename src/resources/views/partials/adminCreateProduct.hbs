@@ -1,0 +1,99 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">CREATE PRODUCT</h5>
+            <button type="button" class="btn-close btn-close-product" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="/admin/product" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="collection" class="form-label" >collection</label>
+                    <select class="form-select" aria-label="Default select example" name="nameCollection">
+                        {{#each collections}}
+                            <option value="{{this.name}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="title" class="form-label" >Title</label>
+                    <input type="text" class="form-control" name='title' id="title" >
+                </div>
+                <div class="mb-3">
+                    <label for="realPrice" class="form-label" >Real Price</label>
+                    <input type="text" class="form-control" name= 'realPrice' id="realPrice" >
+                </div>
+                <div class="mb-3">
+                    <label for="sellPrice" class="form-label" >Sell Price</label>
+                    <input type="text" class="form-control"  name= 'sellPrice' id="sellPrice" >
+                </div>
+                <div class="input-img" ></div>
+                <!-- Button trigger modal-product img -->
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#upload-img-modal">
+                    Choose image
+                </button>
+
+                <!-- Modal choose product img -->
+                <div class="modal fade" id="upload-img-modal" tabindex="-1" aria-labelledby="upload-imgLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl" >
+                        <div class="modal-content" style="min-height: 900px;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="upload-imgLabel">Choose Img</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                {{#each imgs}}
+                                    <div class="col-3 upload-img">
+                                        <img style="width: 100%;" src="\\{{this.path}}" alt="">
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close-upload-img" data-bs-dismiss="modal">Close</button>
+                            <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
+                            <button type="button" class="btn btn-primary import-img">Save</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Button upload gallery img modal -->
+                <div class="input-gallery-img"></div>
+                <button type="button" class="btn btn-primary d-block mb-3 btn-gallery-img" data-bs-toggle="modal" data-bs-target="#upload-gallery-img-modal">
+                    Choose gallery img
+                </button>
+                <!-- Modal Choose gallery img-->
+                <div class="modal fade" id="upload-gallery-img-modal" tabindex="-1" aria-labelledby="upload-gallery-img-modal-label" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="upload-gallery-img-modal-label">Choose gallery img</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div></div>
+                            <div class="row">
+                                {{#each imgs}}
+                                    <div class="col-3 upload-gallery-img">
+                                        <img style="width: 100%;" src="\\{{this.path}}" alt="">
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close-upload-gallery-img" data-bs-dismiss="modal">Close</button>
+                            <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
+                            <button type="button" class="btn btn-primary import-gallery-img">Save</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" >Submit</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+  

@@ -1,7 +1,14 @@
 <div class="container product-template {{product.collection}} my-5">
-  <div class="row">
+<div class="row">
     <div class="col-7">
-      <img style="width: 100%;" src="{{product.urlImg}}" alt="{{product.title}}">
+        <img style="width: 100%;" src="{{product.urlImg}}" alt="{{product.title}}">
+        <div class="gallery-img">
+            <div class="row">
+                {{#each product.urlImgGallery}}
+                    <img src={{this}} class="img-thumbnail col-2 mx-1" alt="...">
+                {{/each}}
+            </div>
+        </div>
     </div>
     <div class="col-5 product-info">
         <ul class="list-group list-group-flush">
@@ -57,7 +64,7 @@
                         </div>
                     </div>
                     <div class="col-8 add-to-cart">
-                        <button type="button" class="btn btn-primary btn-lg ">ADD TO CART</button>
+                        <a href="/cart/add/{{product._id}}" class="btn btn-primary btn-lg ">ADD TO CART</a>
                     </div>
                 </div>
             </li>
@@ -65,7 +72,7 @@
                 <button type="button" class="btn btn-primary btn-lg">BUY IT NOW</button>
             </li>
             <li class="list-group-item banner-safe-secure py-4 border-bottom">
-                <img src="/img/mcafee-banner_1.png" alt="">
+                <img src="/img/mcafee-banner_1.png" alt="" style="width: 100%;">
             </li>
             <li class="list-group-item ">
                 <div class="row">
@@ -94,5 +101,5 @@
             </li>
         </ul>
     </div>
-  </div>
+</div>
 </div>
