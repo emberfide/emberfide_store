@@ -1,5 +1,5 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog ">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">CREATE PRODUCT</h5>
@@ -15,7 +15,6 @@
                         {{/each}}
                     </select>
                 </div>
-                
                 <div class="mb-3">
                     <label for="title" class="form-label" >Title</label>
                     <input type="text" class="form-control" name='title' id="title" >
@@ -36,8 +35,8 @@
 
                 <!-- Modal choose product img -->
                 <div class="modal fade" id="upload-img-modal" tabindex="-1" aria-labelledby="upload-imgLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl" >
-                        <div class="modal-content" style="min-height: 900px;">
+                    <div class="modal-dialog modal-fullscreen" >
+                        <div class="modal-content" >
                         <div class="modal-header">
                             <h5 class="modal-title" id="upload-imgLabel">Choose Img</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -66,7 +65,7 @@
                 </button>
                 <!-- Modal Choose gallery img-->
                 <div class="modal fade" id="upload-gallery-img-modal" tabindex="-1" aria-labelledby="upload-gallery-img-modal-label" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
+                    <div class="modal-dialog modal-fullscreen">
                         <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="upload-gallery-img-modal-label">Choose gallery img</h5>
@@ -90,10 +89,134 @@
                         </div>
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="attribute" class="form-label" >Attribute</label>
+                    <div class="d-flex">
+                        <select style="width: 50%;" class="form-select me-3 select-attribute" aria-label="Default select example" name="attributeSelect">
+                            <option value="" selected>Add Attribute</option>
+                            {{#each attributes}}
+                                <option value="{{this.name}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                        <div class="btn btn-primary " id="add-attribute-product">Apply</div>
+                    </div>
+                    {{#each attributes}}
+                        <div class="wrapped-add-attribute {{this.name}} visually-hidden border border-secondary p-1 my-2">
+                            <div class="d-flex mt-3 align-items-center justify-content-between wrapper-attribute-name">
+                                <p class="label-name-attribute text-capitalize">{{this.name}}</p>
+                                <p class="btn btn-danger btn-remove-attribute {{this.name}}" data={{this.name}}>Remove</p>
+                            </div>
+                            <ul class="list-group border wrapper-item-attribute-element border-secondary list-group-horizontal p-1">
+                                {{#each this.arrayElement}}
+                                    <li class="list-group-item attribute-element-added mb-3 visually-hidden btn">{{this.name}}</li>
+                                {{/each}}
+                            </ul>
+                            <div class="d-flex my-3 justify-content-between">
+                                <div class="btn btn-secondary clear-all-attribute-element">Clear All</div>
+                                <!-- Button trigger modal add attribute element-->
+                               <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Add
+                                    </button>
+                                    <div class="dropdown-menu wrapper-item-attribute-element-dropdown" aria-labelledby="dropdownMenuButton">
+                                        {{#each this.arrayElement}}
+                                            <a class="dropdown-item btn add-attribute-element-dropdown" >{{this.name}}</a>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                                <div class="btn btn-secondary add-all-attribute-element">Add All</div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
                 <button type="submit" class="btn btn-primary" >Submit</button>
             </form>
         </div>
         </div>
     </div>
 </div>
+<script>
+    const addAttribute = document.querySelector('#add-attribute-product');
+    const wrappedAddAttribute = document.querySelectorAll('.wrapped-add-attribute');
+    const removeAttribute = document.querySelectorAll('.btn-remove-attribute');
+    const clearAllAttributeElement = document.querySelectorAll('.clear-all-attribute-element');
+    const addAllAttributeElement = document.querySelectorAll('.add-all-attribute-element');
+    const addAttributeElement = document.querySelectorAll('.add-attribute-element');
+    const wrapperItemAttributeElement = document.querySelectorAll('.wrapper-item-attribute-element');
+    const attributeElementAdded = document.querySelectorAll('.attribute-element-added');
+    const addAttributeElementDropdown = document.querySelectorAll('.add-attribute-element-dropdown');
+
+    const wrapperAttributeName = document.querySelectorAll('.wrapper-attribute-name');
+    const labelNameAttribute = document.querySelectorAll('.label-name-attribute');
+    //handle show type attribute
+    addAttribute.onclick = function(){
+        const selectAttribute = document.querySelector('.select-attribute').value;
+        wrappedAddAttribute.forEach((element,index) => {
+            if(element.classList.contains(selectAttribute)){
+                if(wrapperAttributeName[index].querySelector('input') == null){
+                    var inputNameAttribute = document.createElement('INPUT');
+                    inputNameAttribute.name = `attribute[${index}][name]`;
+                    inputNameAttribute.type = 'hidden';
+                    inputNameAttribute.value = labelNameAttribute[index].textContent;
+                    wrapperAttributeName[index].appendChild(inputNameAttribute);
+                    element.classList.remove('visually-hidden');
+                }
+            }
+        })
+    }
+    // remove type attribute
+    removeAttribute.forEach((element,index) => {
+        element.onclick = function() {
+            wrappedAddAttribute[index].classList.add('visually-hidden');
+        }
+    })
+    //handle add all element attribute
+    addAllAttributeElement.forEach((element,index) => {
+        element.onclick = function() {
+            wrapperItemAttributeElement[index].querySelectorAll('li').forEach((item,index2) => {
+                if(item.querySelector('input') == null){
+                    item.classList.remove('visually-hidden');
+                    const input = document.createElement('INPUT');
+                    input.type = 'hidden';
+                    input.name = `attribute[${index}][arrayElement][${index2}][name]`;
+                    input.value = item.textContent;
+                    item.appendChild(input);
+                }
+            });
+
+        }
+    })
+    // handle clear all element attribute
+    clearAllAttributeElement.forEach((element,index) => {
+        element.onclick = function() {
+            wrapperItemAttributeElement[index].querySelectorAll('li').forEach((item) => {
+                item.classList.add('visually-hidden');
+                item.querySelector('input').remove();
+            });
+
+        }
+    })
+    // handle remove signle attribute element
+    attributeElementAdded.forEach((element,index) => {
+        element.onclick = function() {
+            this.classList.add('visually-hidden');
+            element.querySelector('input').remove();
+        }
+    })
+    //handle add signle attribute element
+    wrappedAddAttribute.forEach((element,index) => {
+        element.querySelectorAll('.add-attribute-element-dropdown').forEach((item,index2) => {
+            item.onclick = function() {
+                if(element.querySelectorAll('.attribute-element-added')[index2].querySelector('input') == null){
+                    element.querySelectorAll('.attribute-element-added')[index2].classList.remove('visually-hidden');
+                    const input = document.createElement('INPUT');
+                    input.name = `attribute[${index}][arrayElement][${index2}][name]`;
+                    input.type = 'hidden';
+                    input.value = item.textContent;
+                    element.querySelectorAll('.attribute-element-added')[index2].appendChild(input);
+                }
+            }
+        })
+    })
+</script>
   

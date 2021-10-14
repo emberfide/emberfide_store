@@ -8,6 +8,7 @@ a, a:hover, a:focus, a:active {
 .footer__logo{
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 .home__title{
     text-align: center;
@@ -34,13 +35,14 @@ a, a:hover, a:focus, a:active {
     border: 1px solid #ddd;
     border-radius: 3px;
 }
-.product-info .size li div{
+.product-info .attribute-element li div{
     line-height: 35px;
     text-align: center;
     border: 1px solid #000;
     border-radius: 3px;
-    width: 55px;
-    height: 35px;
+    padding: 0 10px;
+    // width: 55px;
+    // height: 35px;
 }
 .product-info .quantity{
     text-align: center;
@@ -71,4 +73,15 @@ a, a:hover, a:focus, a:active {
 .active-img{
     border: 3px solid #000;
     // background-color: #000;
+}
+.attribute-element-added:hover{
+    background-image: url('/img/remove.png');
+    background-position: center;
+    background-size: cover;
+}
+.nowrap{
+    white-space: nowrap;
+}
+.list-group-horizontal.row-cols-auto{
+    margin-left: 0px;
 }

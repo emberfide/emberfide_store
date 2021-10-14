@@ -24,6 +24,7 @@
             <h1 class="label-best-seller text-center my-5">Best Selling</h1>   
             <div class="row text-center box-product">
                 {{#each products}}
+                <a style="width: 100%;" href="products/{{this.slug}}"  role="button">
                     <div class="col-sm-6 col-md-3">
                         <div class="thumbnail">
                         <img src="{{this.urlImg}}" alt="{{this.title}}" style="width: 100%;">
@@ -34,6 +35,7 @@
                         </div>
                         </div>
                     </div>
+                </a>
                 {{/each}}
             </div>
         </div>

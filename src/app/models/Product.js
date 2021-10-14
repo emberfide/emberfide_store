@@ -13,6 +13,16 @@ const Product = new Schema({
     urlImg: { type: String },
     urlImgGallery: { type: Array },
     slug: { type: String, slug: "title" },
+    attribute: [
+        {
+            name: {type: String},
+            arrayElement: [
+                {
+                    name:{type: String}
+                }
+            ]
+        }
+    ]
 },{
     timestamps: true,
 });

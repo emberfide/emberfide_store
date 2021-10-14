@@ -3,25 +3,29 @@ const Product = require('../models/Product');
 const Collection = require('../models/Collection');
 const UploadImg = require('../models/UploadImg');
 const Attribute = require('../models/Attribute');
-
-
-
-                            
+      
 class AdminController{
-
     index(req, res){
         res.render('admin/admin',{ title: 'my other page', layout: 'admin' });
     }
 
     //GET admin/product
     product(req, res,next){
-        Promise.all([Collection.find({}),UploadImg.find({}),Product.find({}),Product.countDocumentsDeleted({})])
-            .then(([collections,imgs,products,count]) => {
+        Promise.all(
+            [
+                Collection.find({}),
+                UploadImg.find({}),
+                Product.find({}),
+                Product.countDocumentsDeleted({}),
+                Attribute.find({}),
+            ])
+            .then(([collections,imgs,products,count,attributes]) => {
                 res.render('admin/product',{
                     products: mutipleMongooesToObject(products),
                     collections: mutipleMongooesToObject(collections),
                     imgs: mutipleMongooesToObject(imgs),
                     count,
+                    attributes: mutipleMongooesToObject(attributes),
                     layout: 'admin',
                 })
             })
@@ -59,6 +63,7 @@ class AdminController{
             .then(() => res.redirect('/admin/product'))
             .catch(next);
     }
+    
 
     //PATCH admin/restore/product:id
     restoreProduct(req, res, next){
@@ -83,6 +88,7 @@ class AdminController{
         const product = new Product(req.body);
         product.save()
             .then(() => res.redirect('/admin/product'))
+        // res.json(req.body)
     }
     //POST admin/upload-img
     uploadImg(req, res){
@@ -129,20 +135,30 @@ class AdminController{
         const attribute = new Attribute(req.body);
         attribute.save()
             .then(() => res.redirect('/admin/attribute'))
+        // res.json(req.body)
     }
     //GET admin/attribute/:id
     attributeElement(req, res,next){
-        Attribute.findOne({_id:req.params.id})
-            .then((attribute) => res.render('admin/attributeElement',
-            {
-                attribute: mongooesToObject(attribute),
-                layout:'admin.hbs'
-            }))
+        Promise.all(
+            [
+                Attribute.findOne({_id: req.params.id}),
+                UploadImg.find({}),
+                
+            ]
+            )
+            .then(([attribute,imgs]) =>{
+                res.render('admin/attributeElement',
+                {
+                    attribute: mongooesToObject(attribute),
+                    imgs: mutipleMongooesToObject(imgs),
+                    layout:'admin.hbs'
+                })
+            })
             .catch(next)
     }
-    //POST admin/attribute/:id/create
+    //PUT admin/attribute/:id/create
     createAttributeElement(req, res,next){
-        Attribute.updateOne({_id: req.params.id},req.body)
+        Attribute.updateOne({_id: req.params.id},{$push: {arrayElement:req.body.arrayElement} })
             .then(() => res.redirect('back'))
             .catch(next);
     }
@@ -155,6 +171,30 @@ class AdminController{
     // PUT admin/attribute/edit/:id
     editAttribute(req, res, next){
         Attribute.updateOne({_id: req.params.id}, req.body)
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    // PUT admin/attribute/element/edit/:id
+    editAttributeElement(req, res, next){
+        Attribute.updateOne({_id: req.body.idAttribute,"arrayElement._id": req.params.id},
+            {
+                $set: {
+                    "arrayElement.$.name": req.body.arrayElement[0].name
+                } 
+            } 
+        )
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+    // DELETE admin/attribute/element/delete/:id
+    deleteAttributeElement(req, res, next){
+        Attribute.updateOne({_id: req.body.idAttribute},
+            {
+                $pull: {
+                    arrayElement: {_id: req.params.id}
+                }
+            }
+        )
             .then(() => res.redirect('back'))
             .catch(next);
     }

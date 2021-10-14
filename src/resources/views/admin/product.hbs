@@ -7,8 +7,6 @@
         </button>
         <a class="float-end btn btn-primary" href="/admin/trash/product">Trash({{count}})</a>
     </div>
-    <!-- Modal create -->
-    {{> adminCreateProduct}}
     <form name="form-action-checkbox" method="POST" action="/admin/action/product" >
         <div class="form-check my-3 d-flex align-items-center">
             <input class="form-check-input" type="checkbox" value="" id="check-all-product">
@@ -57,6 +55,9 @@
             </tbody>
         </table>
     </form>
+    <!-- Modal create -->
+    {{> adminCreateProduct}}
+    
 </div>
 {{!-- moadal comfirm detele product --}}
 

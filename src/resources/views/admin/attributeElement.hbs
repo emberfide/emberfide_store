@@ -1,22 +1,35 @@
 <div class="container text-capitalize">
+    <div id="get-id-attribute" idAttribute={{attribute._id}}></div>
     <h2 class="my-5">Attribute: {{attribute.name}}</h2>
     <!-- Button trigger modal create attribute element -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-create-attribute-element">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#modal-create-attribute-element">
     Create
     </button>
 
-    <table class="table">
+    <table class="table text-center">
         <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
         </thead>
-        {{#each attribute.nameElement}}
+        {{#each attribute.arrayElement}}
             <tbody>
                 <tr class="align-middle">
-                    <th scope="row">{{sum @index 1}}</th>
-                    <td>{{this}}</td>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{this.name}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary"  data-bs-id={{this._id}} data-bs-name={{this.name}} data-bs-toggle="modal"  data-bs-target="#edit-attribute-element-modal">
+                        Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-id={{this._id}} data-bs-name={{this.name}} data-bs-toggle="modal" data-bs-target="#delete-attribute-element-modal">
+                        Delete
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         {{/each}}
@@ -31,13 +44,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form class="form-inline" method="POST" action="/admin/attribute/{{attribute._id}}/create">
+            <form class="form-inline" method="POST" action="/admin/attribute/{{attribute._id}}/create?_method=PUT">
                 <div class="form-group">
-                    {{#each attribute.nameElement}}
-                        <input type="hidden" class="form-control" name="nameElement[]" value={{this}}>
-                    {{/each}}
                     <label for="name-attribute-element">Name</label>
-                    <input type="text" class="form-control" name="nameElement[]" id="name-attribute-element">
+                    <input type="text" class="form-control input-add-element-attribute" name="arrayElement[][name]" id="name-attribute-element">
+                    <div class="input-img-attribute-type-img "></div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Create</button>
             </form>
@@ -48,4 +59,79 @@
         </div>
     </div>
     </div>
+    <!-- Modal edit attribute element-->
+    <div class="modal fade" id="edit-attribute-element-modal" tabindex="-1" aria-labelledby="edit-attribute-element-modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-attribute-element-modalLabel">Edit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="" name="edit-attribute-element-form">
+                    <input class="form-control" type="text" name='arrayElement[][name]'>
+                    <input class="form-control" type="hidden" name='idAttribute'>
+                    <button type="submit" class="btn btn-primary mt-3">Edit</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal delete attribute element  -->
+    <div class="modal fade" id="delete-attribute-element-modal" tabindex="-1" aria-labelledby="delete-attribute-element-modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delete-attribute-element-modalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="" name="delete-attribute-element-form">
+                    <input class="form-control" type="text" name='arrayElement[][name]'>
+                    <input class="form-control" type="hidden" name='idAttribute'>
+                    <button type="submit" class="btn btn-primary mt-3">Delete</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+<script>
+    var idAttribute = document.querySelector('#get-id-attribute').attributes.idAttribute.value;
+    var editAttributeElementModal = document.getElementById('edit-attribute-element-modal');
+    var deleteAttributeElementModal = document.getElementById('delete-attribute-element-modal');
+
+    editAttributeElementModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var id = button.getAttribute('data-bs-id');
+    var name = button.getAttribute('data-bs-name');
+    // If necessary, you could initiate an AJAX request here
+    //handle edit attribute element 
+    var inputEditAttributeElement = document.forms['edit-attribute-element-form'].querySelector('input');
+    inputEditAttributeElement.value = name;
+    document.forms['edit-attribute-element-form'].action = `/admin/attribute/element/edit/${id}?_method=PUT`;
+    document.querySelector('form[name="edit-attribute-element-form"]').querySelector('input[name="idAttribute"]').value = idAttribute;
+    })
+
+    deleteAttributeElementModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var id = button.getAttribute('data-bs-id');
+    var name = button.getAttribute('data-bs-name');
+    //handle delete attribute element
+    console.log(idAttribute);
+    var inputDeleteAttributeElement = document.forms['delete-attribute-element-form'].querySelector('input');
+    inputDeleteAttributeElement.value = name;
+    document.forms['delete-attribute-element-form'].action = `/admin/attribute/element/delete/${id}?_method=PUT`;
+    document.querySelector('form[name="delete-attribute-element-form"]').querySelector('input[name="idAttribute"]').value = idAttribute;
+    })
+</script>
+

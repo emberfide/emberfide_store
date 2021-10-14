@@ -18,14 +18,18 @@ router.post('/product',upload.single('img'), adminController.createProduct);
 router.post('/upload-img',upload.array('uploadedImages', 10), adminController.uploadImg);
 router.post('/action/product', adminController.actionProduct);
 router.post('/action/trash-product', adminController.actionTrashProduct);
-router.post('/attribute/:id/create',adminController.createAttributeElement);
 router.post('/attribute/create',adminController.createAttribute);
-
 
 
 router.put('/update/product/:id', adminController.updateProduct);
 router.patch('/restore/product/:id', adminController.restoreProduct);
 router.put('/attribute/edit/:id', adminController.editAttribute);
+router.put('/attribute/element/edit/:id', adminController.editAttributeElement);
+router.put('/attribute/:id/create',adminController.createAttributeElement);
+router.put('/attribute/element/delete/:id/',adminController.deleteAttributeElement);
+
+
+
 
 router.delete('/delete/product/:id', adminController.deleteProduct);
 router.delete('/force/delete/product/:id', adminController.forceDeleteProduct);

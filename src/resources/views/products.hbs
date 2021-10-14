@@ -14,34 +14,18 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><h2>{{product.title}}</h2></li>
             <li class="list-group-item"><span>{{product.realPrice}}</span> - <span>{{product.sellPrice}}</span></li>
-            <li class="list-group-item style">
-                <span class="fw-bold">Style:</span> <span></span>
-                    <ul class="list-group list-group-horizontal">
-                        <li class="list-group-item me-2">
-                            <img class="mt-2 " src="{{product.urlImg}}" alt="">
-                        </li>
-                        <li class="list-group-item me-2">
-                            <img class="mt-2 " src="{{product.urlImg}}" alt="">
-                        </li>
-                        <li class="list-group-item me-2">
-                            <img class="mt-2 " src="{{product.urlImg}}" alt="">
-                        </li>
+            {{#each product.attribute}}
+                <li class="list-group-item attribute-element container">
+                    <span class="fw-bold">{{this.name}}:</span> <span></span>
+                    <ul class="list-group list-group-horizontal row row-cols-auto">
+                        {{#each this.arrayElement}}
+                            <li class="list-group-item me-2 col nowrap">
+                                <div>{{this.name}}</div>
+                            </li>
+                        {{/each}}
                     </ul>
-            </li>
-            <li class="list-group-item size">
-                <span class="fw-bold">Size:</span> <span></span>
-                <ul class="list-group list-group-horizontal flex-fill ">
-                        <li class="list-group-item me-2  ">
-                            <div>S</div>
-                        </li>
-                        <li class="list-group-item me-2 ">
-                            <div>S</div>
-                        </li>
-                        <li class="list-group-item me-2 ">
-                            <div>S</div>
-                        </li>
-                    </ul>
-            </li>
+                </li>
+            {{/each}}
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-4 quantity">

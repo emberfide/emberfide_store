@@ -3,8 +3,12 @@ const Schema = mongoose.Schema;
 
 const Attribute = new Schema({
     name: { type:String },
-    typeAttribute: {type: String},
-    nameElement: { type:Array },
+    type: {type: String},
+    arrayElement: [
+        {
+            name: {type: String}
+        }
+    ],
 });
 
 module.exports = mongoose.model('Attribute', Attribute);

@@ -4,8 +4,9 @@ const handlebars  = require('express-handlebars');
 const morgan = require('morgan');
 const methodOverride = require('method-override');
 const app = express();
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const port = 3000;
+const bodyParser = require('body-parser');
 
 const route = require('./routes');
 
@@ -27,6 +28,10 @@ db.connect();
 app.use(cookieParser());
 app.use(express.urlencoded());
 app.use(express.json());
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.set('json spaces', 1);
 
 
 // const session = require('express-session'); 
@@ -53,7 +58,8 @@ app.use(session({
 app.engine('hbs', handlebars({
   extname: '.hbs',
   helpers: {
-    sum: (a, b) => a+b
+    sum: (a, b) => a+b,
+	compare: (a,b) => a == b,
 }
 }));
 app.set('view engine', 'hbs');
