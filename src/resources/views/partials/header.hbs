@@ -1,6 +1,6 @@
 	<div class="header">
 	<div class="header__top"><span>FREE SHIPPING ON ORDERS OVER $150</span></div>
-	<div class="header__main container">
+	<div class="header__main container position-relative">
 		<div class="input-group mb-3 top-search header__main-item">
 			<input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
 			<button class="btn btn-outline-secondary" type="button" id="button-addon2">
@@ -14,17 +14,64 @@
 				<img src="/img/logo.png" alt="" width="200">
 			</div>
 		</a>
-		<div class="header__main__cartCheckout header__main-item" role="button" data-bs-toggle="modal" data-bs-target="#header__cart__modal">
-			<div class="header__main__cartCheckout__container" >
+		<div class="header__main__cartCheckout header__main-item">
+			<div class="header__main__cartCheckout__container dropdown-cart position-relative">
 				<div class="header__main__cart d-flex align-items-center justify-content-center">
 					<svg xmlns="http://www.w3.org/2000/svg"  height="38" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
 						<path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708z"/>
 					</svg>
-					<span>({{countCart}})</span>
+					<span id="total-product"></span>
 				</div>
 				<p>YOUR CART</p>
+				<div class="cart-info p-3">
+					{{#each cart}}
+						<div class="row py-3 border-bottom align-items-center text-start product-cart">
+							<div class="col-4">
+								<img src={{this.urlImg}} style="width: 100%;" alt="">
+							</div>
+							<div class="col-7 text-uppercase">
+								<p>{{this.title}}  
+									{{#each this.chooseAttribute}}
+									- {{valueObject this}} 
+									{{/each}}
+								</p>
+								<p class="">
+									<span class="fw-bold fs-2 real-price-cart">${{realPrice}} </span> 
+									<del class="fs-4"> ${{sellPrice}}</del>
+								</p>
+								<ul class="list-group list-group-horizontal row mx-1">
+									<li class="list-group-item col-3 text-center cursor-pointer quantity-reduce">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+										<path d="M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z"></path>
+										</svg>
+									</li>
+									<li class="list-group-item col-3 p-0">
+										<input type="text" name="quantity" class="quantity-input form-control border-0 h-100 text-center" value={{this.count}}>
+									</li>
+									<li class="list-group-item col-3 text-center cursor-pointer quantity-plus">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+										<path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
+										</svg>
+									</li>
+								</ul>
+							</div>
+							<div class="col-1 p-0 cursor-pointer remove-product-cart">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+								<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+								</svg>
+							</div>
+						</div>
+					{{else}}
+					<h3 id="empty-cart" class="m-0">Your Cart is Empty</h3>
+					{{/each}}
+					<div class="d-flex justify-content-between mt-4 fs-4 group-total-price-cart">
+						<span>Subtotal</span>
+						<p><span>$</span><span class="total-price">300</span></p>
+					</div>
+				</div>
 			</div>
 		</div>
+		
 	</div>
 	<div class="header__bottom">
 	<ul class="nav justify-content-center">
@@ -60,43 +107,97 @@
 		</li>
 	</ul>
 	</div>
+	
 	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="header__cart__modal" tabindex="-1" aria-labelledby="header__cart__modalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-	<div class="modal-content">
-		<div class="modal-header">
-		<h5 class="modal-title" id="header__cart__modalLabel">Modal title</h5>
-		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		</div>
-		<div class="modal-body">
-			<table class="table">
-				<tbody>
-					{{#each cart}}
-					<tr>
-					<td>
-						<img src={{this.urlImg0}} class="img-thumbnail" alt="...">
-					</td>
-					<td>
-						{{this.title}}
-					</td>
-					<td>
-						{{this.sellPrice}}
-					</td>
-					<td>
-						{{this.count}}
-					</td>
-					</tr>
-					{{/each}}
-				</tbody>
-			</table>
-		</div>
-		<div class="modal-footer">
-		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-primary">Save changes</button>
-		</div>
-	</div>
-	</div>
-	</div>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
+	<script>
+		const quantityInput = document.querySelectorAll('.quantity-input');
+		const quantityPlus = document.querySelectorAll('.quantity-plus');
+		const quantityReduce = document.querySelectorAll('.quantity-reduce');
+		const totalPrice = document.querySelector('.total-price');
+		const realPriceCart = document.querySelectorAll('.real-price-cart');
+		const removeProductCart = document.querySelectorAll('.remove-product-cart');
+		const productCart = document.querySelectorAll('.product-cart');
+		let totalProduct = 0;
+		let totalPriceProduct = 0;
+		// emptycart remove total price
+		if(document.querySelector('#empty-cart')){
+			document.querySelector('.group-total-price-cart').remove();
+		}
+		//show total price product
+		quantityInput.forEach((item,index) => {
+			totalPriceProduct += item.value * Math.round(parseFloat(realPriceCart[index].textContent.slice(1)) * 100) / 100;
+			console.log(totalPriceProduct)
+		})
+		totalPrice.textContent = `${totalPriceProduct}`
+		// show total product
+		quantityInput.forEach(item => {
+			totalProduct += parseInt(item.value);
+		})
+		document.querySelector('#total-product').textContent = totalProduct;
+		//handle plus product
+		quantityPlus.forEach((item,index) => {
+			item.onclick = function(){
+				quantityInput[index].value++
+				$.post( "/cart/plus", { index }, function( data ) {
+					let totalPriceCartChange = 0;
+					totalProduct = 0;
+					data.forEach(item => {
+						totalProduct += item.count;
+						totalPriceCartChange += item.count * item.realPrice;
+						totalPriceCartChange = Math.round(totalPriceCartChange * 100) / 100;
+					})
+					document.querySelector('#total-product').textContent = totalProduct;
+					totalPrice.textContent = `${totalPriceCartChange}`;
+				});
+			}
+		})
+		quantityReduce.forEach((item,index) => {
+			item.onclick = function(){
+			if(quantityInput[index].value > 1){
+				quantityInput[index].value--
+				$.post( "/cart/reduce", { index }, function( data ) {
+					let totalPriceCartChange = 0;
+					totalProduct = 0;
+					data.forEach(item => {
+						totalProduct += item.count
+						totalPriceCartChange += item.count * item.realPrice;
+						totalPriceCartChange = Math.round(totalPriceCartChange * 100) / 100;
+					})
+					document.querySelector('#total-product').textContent = totalProduct;
+					totalPrice.textContent = `${totalPriceCartChange}`;
+				});
+			}
+			}
+		})
+		quantityInput.forEach((item, index) =>{
+			item.addEventListener('change',function(e) {
+				console.log(typeof(e.target.value))
+				$.post('/cart/quantity-change',{ index, quantity: e.target.value},function(data){
+					let totalPriceCartChange = 0;
+					totalProduct = 0;
+					data.forEach(item => {
+						totalProduct += parseFloat(item.count)
+						totalPriceCartChange += item.count * item.realPrice;
+						totalPriceCartChange = Math.round(totalPriceCartChange * 100) / 100;
+					})
+					document.querySelector('#total-product').textContent = totalProduct;
+					totalPrice.textContent = `${totalPriceCartChange}`;
+				})
+			})
+		})
+		removeProductCart.forEach((item,index) => {
+			item.onclick = function() {
+				$.post('/cart/remove-product-cart',{ index }, function(data) {
+					location.reload();
+				})
+			}
+		})
+	</script>
+	
+
+  
+	
+	
 
 

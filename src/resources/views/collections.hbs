@@ -1,19 +1,19 @@
 <div class="container collectionPage">
     <h1 class="my-4 collectionPage__title " >{{params}}</h1>
-    <div class="row">
+    <div class="row box-product">
         {{#each productsCollection}}
-                <div class="col-4 align-items-stretch">
-                    <a href= '/products/{{this.slug}}'>  
-                        <div class="card" style="">
-                            <img src="{{this.urlImg}}" class="card-img-top" alt="{{this.title}}">
-                            <div class="card-body">
-                                <p class="card-text">{{this.title}}</p>
-                                <p class="card-text">{{this.sellPrice}} - {{this.realPrice}}</p>
-                                <div></div>
-                            </div>
+            <a style="width: 100%;" href="products/{{this.slug}}" role="button">
+                <div class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <img src="{{this.urlImg}}" alt="{{this.title}}" style="width: 100%;">
+                        <div class="caption my-3 text-center">
+                            <h3 style="font-size: 16px; font-weight:600">{{this.title}}</h3>
+                            <p class="" style="font-size: 20px; font-weight:600">{{this.sellPrice}} - <del>{{this.realPrice}}</del></p>
+                            <p class=""><a style="width: 100%;" href="products/{{this.slug}}" class="btn btn-primary" role="button">Add To Cart</a></p>
                         </div>
-                    </a> 
+                    </div>
                 </div>
+            </a>
         {{/each}}
     </div>
 </div>

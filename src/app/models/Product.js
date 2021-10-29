@@ -18,7 +18,7 @@ const Product = new Schema({
             name: {type: String},
             arrayElement: [
                 {
-                    name:{type: String}
+                    name:{type: String},
                 }
             ]
         }

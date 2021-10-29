@@ -6,7 +6,7 @@ const Attribute = new Schema({
     type: {type: String},
     arrayElement: [
         {
-            name: {type: String}
+            name: {type: String},
         }
     ],
 });

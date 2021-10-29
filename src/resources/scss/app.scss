@@ -21,10 +21,11 @@ a, a:hover, a:focus, a:active {
 // .product-info .add-to-cart{
 //     padding: 10px;
 // }
-.product-info .add-to-cart a
+.product-info .add-to-cart div
 {
     width: 100%;
     padding: 12px;
+    cursor: pointer;
 }
 .product-info .list-group-item{
     padding: 0.5rem 0px;
@@ -59,9 +60,10 @@ a, a:hover, a:focus, a:active {
 .product-info .quantity ul{
     border: 1px solid #ddd;
 }
-.product-info .buy-it-now button{
+.product-info .buy-it-now div{
     width: 100%;
     padding: 12px;
+    cursor: pointer;
 }
 .product-info .banner-safe-scure img{
     width: 100%;
@@ -84,4 +86,33 @@ a, a:hover, a:focus, a:active {
 }
 .list-group-horizontal.row-cols-auto{
     margin-left: 0px;
+}
+.box-product h3{
+    white-space: nowrap;
+    overflow: hidden;
+}
+.dropdown-cart:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; // remove the gap so it doesn't close
+}
+.cart-info{
+    position: absolute;
+    right: 0px;
+    top: 72px;
+    width: 40vw;
+    max-width: 420px;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0.3rem;
+    display: none;
+    z-index: 100;
+    background-color: #fff;
+}
+.header__main__cartCheckout__container:hover .cart-info{
+    display: block;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.active-item-attribute{
+    border: 2px solid #4ab742!important;
 }

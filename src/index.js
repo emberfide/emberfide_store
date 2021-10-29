@@ -45,7 +45,6 @@ app.use(methodOverride('_method'));
 // });
 
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
@@ -60,6 +59,7 @@ app.engine('hbs', handlebars({
   helpers: {
     sum: (a, b) => a+b,
 	compare: (a,b) => a == b,
+	valueObject: (object) => Object.values(object),
 }
 }));
 app.set('view engine', 'hbs');

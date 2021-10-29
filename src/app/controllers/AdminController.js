@@ -40,15 +40,20 @@ class AdminController{
     }
     //GET admin/update/product/:id
     editProduct(req, res){
-        let collectionsToObject = [];
-        Collection.find({})
-            .then(collections => {collectionsToObject = mutipleMongooesToObject(collections)});
-        Product.findOne({_id: req.params.id})
-            .then(product => res.render('admin/editProduct',{
-                collections:collectionsToObject,
-                product: mongooesToObject(product),
-                layout:'admin',
-            }))
+        Promise.all(
+            [
+                Collection.find({}),
+                Product.findOne({_id:req.params.id}),
+                Attribute.find({})
+            ])
+            .then(([collections, product,attributes]) =>{
+                res.render('admin/editProduct',{
+                    collections: mutipleMongooesToObject(collections),
+                    product: mongooesToObject(product),
+                    attributes: mutipleMongooesToObject(attributes),
+                    layout:'admin',
+                })
+            })
     }
     //GET admin/trash/product
     trashProduct(req,res,next){
@@ -62,6 +67,7 @@ class AdminController{
         Product.updateOne({_id: req.params.id}, req.body)
             .then(() => res.redirect('/admin/product'))
             .catch(next);
+        // res.json(req.body);
     }
     
 

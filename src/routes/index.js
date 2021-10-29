@@ -4,6 +4,7 @@ const site = require('./sites');
 const categorys = require('./categorys');
 const admin = require('./admin');
 const cart = require('./cart');
+const checkOut = require('./checkOut');
 
 function route(app){
     app.use('/admin', admin);
@@ -12,6 +13,7 @@ function route(app){
     app.use('/categorys', categorys);
     app.use('/cart',cart);
     app.use('/', site);
+    app.use('/check-out',checkOut);
 }
 
 module.exports = route;

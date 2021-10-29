@@ -154,6 +154,8 @@
         wrappedAddAttribute.forEach((element,index) => {
             if(element.classList.contains(selectAttribute)){
                 if(wrapperAttributeName[index].querySelector('input') == null){
+                console.log('click')
+
                     var inputNameAttribute = document.createElement('INPUT');
                     inputNameAttribute.name = `attribute[${index}][name]`;
                     inputNameAttribute.type = 'hidden';
@@ -168,6 +170,7 @@
     removeAttribute.forEach((element,index) => {
         element.onclick = function() {
             wrappedAddAttribute[index].classList.add('visually-hidden');
+            wrapperAttributeName[index].querySelector('input').remove();
         }
     })
     //handle add all element attribute
