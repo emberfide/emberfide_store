@@ -1,11 +1,11 @@
 <div class="container product-template {{product.collection}} my-5">
 <div class="row">
     <div class="col-lg-7 ">
-        <img style="width: 100%;" src="{{product.urlImg}}" alt="{{product.title}}">
+        <img class="image-show-product" style="width: 100%;" src="{{product.urlImg}}" alt="{{product.title}}">
         <div class="gallery-img">
             <div class="row">
                 {{#each product.urlImgGallery}}
-                    <img src={{this}} class="img-thumbnail col-2 mx-1" alt="...">
+                    <img src={{this}} class="img-thumbnail img-item-gallery col-2 mx-1 opacity-50 cursor-pointer" alt="...">
                 {{/each}}
             </div>
         </div>
@@ -14,26 +14,64 @@
         <form action="" id="form-add-to-cart" method="POST">
             <ul class="list-group list-group-flush mx-1">
                 <li class="list-group-item"><h2>{{product.title}}</h2></li>
-                <li class="list-group-item"><span class="fs-2 fw-bold">{{product.realPrice}} </span>  <del class="fs-4"> {{product.sellPrice}}</del></li>
-                {{#each product.attribute}}
-                    <li class="list-group-item attribute-element">
-                        <span class="fw-bold">{{this.name}}:</span> <span></span>
-                        <ul class="list-group list-group-horizontal row row-cols-auto attribute-group">
+                <li class="list-group-item product-info__container-price" data-name={{priceAttribute.name}}>
+                    {{#each priceAttribute.arrayElement}}
+                        <div class="product-info__wrapper-price visually-hidden">
+                            <span class="fs-1 fw-bolder me-4" style="color: #4ab742;">$<span class="number-sell-price">{{this.sellPrice}}</span></span>  
+                            <del class="fs-4 opacity-75">$<span class="number-real-price">{{this.realPrice}}</span></del>
+                        </div>
+                    {{/each}}
+                    <input type="hidden" name="price[realPrice]">
+                    <input type="hidden" name="price[sellPrice]">
+                </li>
+                {{#each attributeTypeImg}}
+                    <div class="wrapper-attribute-group-type-img {{this.name}}">
+                        <li class="list-group-item attribute-element text-uppercase">
+                            <span class="fw-bold">{{this.name}}:</span>
                             {{#each this.arrayElement}}
-                                <li class="list-group-item me-2 col nowrap cursor-pointer attribute-item">
-                                    <div>{{this.name}}</div>
-                                </li>
+                                <span class="name-attribute-element-choose visually-hidden" data-name="{{this.name}}">
+                                    {{this.name}}
+                                </span>
                             {{/each}}
-                        </ul>
-                    </li>
-                    <input type="hidden" name="chooseAttribute[{{@index}}][{{this.name}}]" class="product-info__choose-attribute-input {{this.name}}" >
+                            <input type="hidden" name="">
+                            <ul class="list-group list-group-horizontal row row-cols-auto attribute-group-type-img {{this.name}}">
+                                {{#each this.arrayElement}}
+                                    <li class="list-group-item me-2 col nowrap cursor-pointer attribute-item">
+                                        <img class="border border-dark p-1 rounded-1" src={{this.img}} height=100 alt="">
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                        <input type="hidden" name="chooseAttribute[{{this.name}}]" class="product-info__choose-attribute-type-img-input {{this.name}}" >
+                    <input type="hidden" name="urlImgChooseAttribute[]" class="choose-url-img-attribute-element">
+                    </div>
+                {{/each}}
+                {{#each attributeTypeButton}}
+                    <div class="wrapper-attribute-group-type-button {{this.name}}">
+                        <li class="list-group-item attribute-element text-uppercase">
+                            <span class="fw-bold">{{this.name}}:</span> 
+                            {{#each this.arrayElement}}
+                                <span class="name-attribute-element-choose visually-hidden" data-name="{{this.name}}">
+                                    {{this.name}}
+                                </span>
+                            {{/each}}
+                            <ul class="list-group list-group-horizontal row row-cols-auto attribute-group-type-button {{this.name}}">
+                                {{#each this.arrayElement}}
+                                    <li class="list-group-item me-2 col nowrap cursor-pointer attribute-item">
+                                        <div>{{this.name}}</div>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                        <input type="hidden" name="chooseAttribute[{{this.name}}]" class="product-info__choose-attribute-type-button-input {{this.name}}" >
+                    </div>
                 {{/each}}
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-5 quantity px-0">
                             <div class="container-fluid" >
                             <ul class="list-group list-group-horizontal row">
-                                <li class="list-group-item col-3 info-product__change-quantity-reduce quantity--changeValue">
+                                <li class="list-group-item col-3 info-product__change-quantity-reduce quantity--changeValue cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
                                     <path d="M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z"/>
                                     </svg>
@@ -41,7 +79,7 @@
                                 <li class="list-group-item col-6">
                                     <input type="text"  name="quantity" class="form-control info-product__quantity-input" value="1">
                                 </li>
-                                <li class="list-group-item col-3 info-product__change-quantity-plus quantity--changeValue">
+                                <li class="list-group-item col-3 info-product__change-quantity-plus quantity--changeValue cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                     <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
                                     </svg>
@@ -91,25 +129,69 @@
 </div>
 </div>
 <script>
-    const attributeGroup = document.querySelectorAll('.attribute-group');
+    const wrapperAttributeGroupTypeButton = document.querySelectorAll('.wrapper-attribute-group-type-button');
+    const wrapperAttributeGroupTypeImg = document.querySelectorAll('.wrapper-attribute-group-type-img');
     const quantityInput_infoProduct = document.querySelector('.info-product__quantity-input');
     const quantityPlus_infoProduct = document.querySelector('.info-product__change-quantity-plus');
     const quantityReduce_infoProduct = document.querySelector('.info-product__change-quantity-reduce');
-    const chooseAttributeInput = document.querySelectorAll('input.product-info__choose-attribute-input');
+    const chooseAttributeInputTypeButton = document.querySelectorAll('input.product-info__choose-attribute-type-button-input');
+    const chooseAttributeInputTypeImg = document.querySelectorAll('input.product-info__choose-attribute-type-img-input');
     const addToCart = document.querySelector('.product-info__add-to-cart');
     const formAddToCart = document.querySelector('#form-add-to-cart');
-    //handle choose attribute product
-    attributeGroup.forEach((element,index1) => {
+    const wrapperPrice = document.querySelectorAll('.product-info__wrapper-price');
+    const nameAttributeChangePrice = document.querySelector('.product-info__container-price').getAttribute('data-name');
+    const nameAttributeElementChoose = document.querySelectorAll('.name-attribute-element-choose');
+    const imgShowProduct = document.querySelector('.image-show-product');
+    const imgItemGallery = document.querySelectorAll('.img-item-gallery');
+    const inputSellPrice = document.querySelector('input[name="price[sellPrice]"]');
+    const inputRealPrice = document.querySelector('input[name="price[realPrice]"]');
+    const numberRealPrice = document.querySelectorAll('.product-info__wrapper-price .number-real-price');
+    const numberSellPrice = document.querySelectorAll('.product-info__wrapper-price .number-sell-price');
+    //handle choose attribute product type button
+    wrapperAttributeGroupTypeButton.forEach((element,index1) => {
         element.querySelectorAll('.attribute-item div')[0].classList.add('active-item-attribute');
-        chooseAttributeInput[index1].value = element.querySelector('.attribute-item div').textContent;
+        element.querySelectorAll('.name-attribute-element-choose')[0].classList.remove('visually-hidden');
+        chooseAttributeInputTypeButton[index1].value = element.querySelector('.attribute-item div').textContent;
         element.querySelectorAll('.attribute-item div').forEach((item,index) => {
             item.onclick = function(){
+                element.querySelector('.name-attribute-element-choose:not(.visually-hidden)').classList.add('visually-hidden');
+                element.querySelectorAll('.name-attribute-element-choose')[index].classList.remove('visually-hidden');
                 element.querySelector('.active-item-attribute').classList.remove('active-item-attribute');
                 item.classList.add('active-item-attribute');
-                chooseAttributeInput[index1].value = item.textContent;
+                chooseAttributeInputTypeButton[index1].value = item.textContent;
+                if(element.classList.contains(nameAttributeChangePrice)){
+                    document.querySelector('.product-info__wrapper-price:not(.visually-hidden)').classList.add('visually-hidden');
+                    wrapperPrice[index].classList.remove('visually-hidden'); 
+                }
             }
         })
     })
+
+    //handle choose attribute product type img
+    wrapperAttributeGroupTypeImg.forEach((element,index1) => {
+        element.querySelector('.choose-url-img-attribute-element').value = element.querySelectorAll('.attribute-item img')[0].src;
+        element.querySelectorAll('.attribute-item img')[0].classList.add('active-item-attribute');
+        element.querySelectorAll('.name-attribute-element-choose')[0].classList.remove('visually-hidden');
+        chooseAttributeInputTypeImg[index1].value = nameAttributeElementChoose[0].getAttribute('data-name');
+        element.querySelectorAll('.attribute-item img').forEach((item,index) => {
+            item.onclick = function(){
+                element.querySelector('.choose-url-img-attribute-element').value = item.src;
+                imgShowProduct.src = item.src;
+                element.querySelector('.name-attribute-element-choose:not(.visually-hidden)').classList.add('visually-hidden');
+                element.querySelectorAll('.name-attribute-element-choose')[index].classList.remove('visually-hidden');
+                element.querySelector('.active-item-attribute').classList.remove('active-item-attribute');
+                item.classList.add('active-item-attribute');
+                chooseAttributeInputTypeImg[index1].value = nameAttributeElementChoose[index].getAttribute('data-name');
+                if(element.classList.contains(nameAttributeChangePrice)){
+                    document.querySelector('.product-info__wrapper-price:not(.visually-hidden)').classList.add('visually-hidden');
+                    wrapperPrice[index].classList.remove('visually-hidden'); 
+                    inputSellPrice.value = numberSellPrice[index].textContent;
+                    inputRealPrice.value = numberRealPrice[index].textContent;
+                }
+            }
+        })
+    })
+
     //handle change quantity product
     quantityPlus_infoProduct.onclick = function(){
         quantityInput_infoProduct.value++
@@ -124,5 +206,17 @@
         formAddToCart.action = `/cart/add/${this.dataset.id}`;
         formAddToCart.submit();
     }
-    
+    //handle price product
+    wrapperPrice[0].classList.remove('visually-hidden');
+    imgItemGallery[0].classList.remove('opacity-50');
+    inputRealPrice.value = numberRealPrice[0].textContent;
+    inputSellPrice.value = numberSellPrice[0].textContent;
+    //handle choose img gallery
+    imgItemGallery.forEach((item,index) => {
+        item.onclick = function() {
+            document.querySelector('.img-item-gallery:not(.opacity-50)').classList.add('opacity-50')
+            item.classList.remove('opacity-50');
+            imgShowProduct.src = item.src;
+        }
+    })
 </script>

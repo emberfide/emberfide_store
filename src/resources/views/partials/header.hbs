@@ -27,17 +27,17 @@
 					{{#each cart}}
 						<div class="row py-3 border-bottom align-items-center text-start product-cart">
 							<div class="col-4">
-								<img src={{this.urlImg}} style="width: 100%;" alt="">
+								<img src={{this.urlImgChooseAttribute}} style="width: 100%;" alt="">
 							</div>
 							<div class="col-7 text-uppercase">
 								<p>{{this.title}}  
 									{{#each this.chooseAttribute}}
-									- {{valueObject this}} 
+									- <span class="fw-bold">{{@key}}</span> : {{this}} 
 									{{/each}}
 								</p>
 								<p class="">
-									<span class="fw-bold fs-2 real-price-cart">${{realPrice}} </span> 
-									<del class="fs-4"> ${{sellPrice}}</del>
+									<span class="fw-bold fs-2 real-price-cart">${{this.price.sellPrice}} </span> 
+									<del class="fs-4"> ${{this.price.realPrice}}</del>
 								</p>
 								<ul class="list-group list-group-horizontal row mx-1">
 									<li class="list-group-item col-3 text-center cursor-pointer quantity-reduce">
@@ -68,6 +68,9 @@
 						<span>Subtotal</span>
 						<p><span>$</span><span class="total-price">300</span></p>
 					</div>
+					{{#if cart}}
+						<div class="row"><a href="/cart" class="btn fw-bold d-flex justify-content-center align-items-center text-light" style="background-color: #4ab742;height:50px"><span>GO TO CART</span></a></div>
+					{{/if}}
 				</div>
 			</div>
 		</div>
@@ -127,7 +130,6 @@
 		//show total price product
 		quantityInput.forEach((item,index) => {
 			totalPriceProduct += item.value * Math.round(parseFloat(realPriceCart[index].textContent.slice(1)) * 100) / 100;
-			console.log(totalPriceProduct)
 		})
 		totalPrice.textContent = `${totalPriceProduct}`
 		// show total product
@@ -140,11 +142,12 @@
 			item.onclick = function(){
 				quantityInput[index].value++
 				$.post( "/cart/plus", { index }, function( data ) {
+					console.log(data);
 					let totalPriceCartChange = 0;
 					totalProduct = 0;
 					data.forEach(item => {
 						totalProduct += item.count;
-						totalPriceCartChange += item.count * item.realPrice;
+						totalPriceCartChange += item.count * item.price.sellPrice;
 						totalPriceCartChange = Math.round(totalPriceCartChange * 100) / 100;
 					})
 					document.querySelector('#total-product').textContent = totalProduct;
@@ -161,7 +164,7 @@
 					totalProduct = 0;
 					data.forEach(item => {
 						totalProduct += item.count
-						totalPriceCartChange += item.count * item.realPrice;
+						totalPriceCartChange += item.count * item.price.sellPrice;
 						totalPriceCartChange = Math.round(totalPriceCartChange * 100) / 100;
 					})
 					document.querySelector('#total-product').textContent = totalProduct;
@@ -178,7 +181,7 @@
 					totalProduct = 0;
 					data.forEach(item => {
 						totalProduct += parseFloat(item.count)
-						totalPriceCartChange += item.count * item.realPrice;
+						totalPriceCartChange += item.count * item.price.sellPrice;
 						totalPriceCartChange = Math.round(totalPriceCartChange * 100) / 100;
 					})
 					document.querySelector('#total-product').textContent = totalProduct;

@@ -32,7 +32,7 @@
                         data-bs-toggle="modal"  
                         data-bs-id={{this._id}}
                         data-bs-name="{{this.name}}" 
-                        data-bs-type={{this.typeAttribute}} 
+                        data-bs-type="{{this.type}}"
                         data-bs-target="#editAttributeModal">
                         Edit
                         </button>
@@ -166,6 +166,7 @@
     var formEditAttribute = document.forms['edit-attribute-form'];
     var typeAttributeEditForm = document.querySelectorAll('.edit-attribute-form .form-check-input-attribute-type')
     editAttributeModal.addEventListener('show.bs.modal', function (event) {
+        console.log('testmodal')
     // Button that triggered the modal
     var button = event.relatedTarget
     // Extract info from data-bs-id* attributes
@@ -177,7 +178,7 @@
     //
     // Update the modal's content.
     console.log(name);
-    console.log(type)
+    console.log(type);
     document.querySelector('#edit-name-attribute').value = name;
     for(var i=0;i < typeAttributeEditForm.length; i++){
         if(typeAttributeEditForm[i].value == type){

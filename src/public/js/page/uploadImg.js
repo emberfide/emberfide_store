@@ -65,6 +65,31 @@ document.querySelector('.import-img').onclick = function() {
     document.querySelector('.input-img').appendChild(input);
     document.querySelector('.close-upload-img').click();
 }
+//handle choose img attribute advanced
+const attributeImg = document.querySelectorAll('.attribute-advanced-img');
+for(let i=0; i < attributeImg.length; i++){
+        attributeImg[i].addEventListener('click', function(e){
+            const activeAttribute = document.querySelectorAll('.active-attribute-img');
+            if(activeAttribute.length > 0){
+                for(let j=0; j < activeAttribute.length; j++){
+                    activeAttribute[j].classList.remove('active-attribute-img');
+                    this.classList.add('active-attribute-img');   
+                }
+            }
+            else{
+                this.classList.add('active-attribute-img');   
+            }
+        });   
+    }
+//handle import img attribute avanced
+document.querySelector('.import-attribute-avanced-img').onclick = function() {
+    var index = document.querySelector('.import-attribute-avanced-img').getAttribute('data-index');
+    const active = document.querySelector('.active-attribute-img img');
+    document.querySelectorAll('.input-url-img-attriibute')[index].value = active.attributes.src.value;
+    document.querySelectorAll('.choose-img-information-advanced')[index].src = active.attributes.src.value;
+
+    document.querySelector('.img-avanced-modal-close').click();
+}
 
  
 

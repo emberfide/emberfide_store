@@ -3,39 +3,42 @@ const {mutipleMongooesToObject, mongooesToObject} = require('../../untill/mongoo
 const Product = require('../models/Product');
 
 class CartController{
+    index(req, res,next){
+        res.render('cart',{layout:'cart'});
+    }
     add(req, res, next){
         Product.findOne({_id:req.params.id})
             .then(productNot => {
                 let product = mongooesToObject(productNot); 
                 if(req.session.cart == undefined){
-                    console.log('cart=undefined')
                     req.session.cart = [];
                     product.count = parseInt(req.body.quantity);
                     product.chooseAttribute = req.body.chooseAttribute;
+                    product.price = req.body.price;
+                    product.urlImgChooseAttribute  = req.body.urlImgChooseAttribute;
                     req.session.cart.push(product);
                 }
                 else{
                     let checkProduct = false;
                     req.session.cart.forEach(productItem => {
                         if(productItem._id == req.params.id){
-                            let checkAttribute = []
-                            productItem.chooseAttribute.forEach((item, index) => {
-                                checkAttribute[index] = JSON.stringify(item)  === JSON.stringify(req.body.chooseAttribute[index]) ;
-                            })
-                            if(!checkAttribute.includes(false)){
-                                console.log('test');
+                            // let checkAttribute = []
+                            // productItem.chooseAttribute.forEach((item, index) => {
+                            //     checkAttribute[index] = JSON.stringify(item)  === JSON.stringify(req.body.chooseAttribute[index]) ;
+                            // })
+                            if(JSON.stringify(productItem.chooseAttribute) == JSON.stringify(req.body.chooseAttribute)){
                                 productItem.count += parseInt(req.body.quantity);
-                                product.chooseAttribute = req.body.chooseAttribute;
                                 checkProduct = true;
                             }
                         }
                     });
                     if(!checkProduct){
-                        console.log('cart new')
                         product.count = parseInt(req.body.quantity);
                         product.chooseAttribute = req.body.chooseAttribute;
+                        product.price = req.body.price;
                         req.session.cart.push(product);
-                    }  
+                        product.urlImgChooseAttribute  = req.body.urlImgChooseAttribute;
+                    }
                 }
                 req.session.save(function(err) {
                     // session saved
@@ -58,7 +61,6 @@ class CartController{
     }
     removeProductCart(req, res, next){
         res.locals.cart.splice(req.body.index,1);
-        console.log('lenght',res.locals.cart)
         res.send(res.locals.cart);
     }
     json(req,res,next){

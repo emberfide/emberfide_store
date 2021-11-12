@@ -9,6 +9,7 @@ router.post('/reduce', cartController.reduce);
 router.post('/quantity-change', cartController.quantityChange);
 router.post('/remove-product-cart', cartController.removeProductCart);
 router.get('/json', cartController.json);
+router.get('/', cartController.index);
 
 
 module.exports = router;

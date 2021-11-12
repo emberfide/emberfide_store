@@ -6,138 +6,192 @@
             <button type="button" class="btn-close btn-close-product" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form method="POST" action="/admin/product" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="collection" class="form-label" >collection</label>
-                    <select class="form-select" aria-label="Default select example" name="nameCollection">
-                        {{#each collections}}
-                            <option value="{{this.name}}">{{this.name}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="title" class="form-label" >Title</label>
-                    <input type="text" class="form-control" name='title' id="title" >
-                </div>
-                <div class="mb-3">
-                    <label for="realPrice" class="form-label" >Real Price</label>
-                    <input type="text" class="form-control" name= 'realPrice' id="realPrice" >
-                </div>
-                <div class="mb-3">
-                    <label for="sellPrice" class="form-label" >Sell Price</label>
-                    <input type="text" class="form-control"  name= 'sellPrice' id="sellPrice" >
-                </div>
-                <div class="input-img" ></div>
-                <!-- Button trigger modal-product img -->
-                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#upload-img-modal">
-                    Choose image
-                </button>
-
-                <!-- Modal choose product img -->
-                <div class="modal fade" id="upload-img-modal" tabindex="-1" aria-labelledby="upload-imgLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-fullscreen" >
-                        <div class="modal-content" >
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="upload-imgLabel">Choose Img</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                {{#each imgs}}
-                                    <div class="col-3 upload-img">
-                                        <img style="width: 100%;" src="\\{{this.path}}" alt="">
-                                    </div>
-                                {{/each}}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary close-upload-img" data-bs-dismiss="modal">Close</button>
-                            <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
-                            <button type="button" class="btn btn-primary import-img">Save</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Button upload gallery img modal -->
-                <div class="input-gallery-img"></div>
-                <button type="button" class="btn btn-primary d-block mb-3 btn-gallery-img" data-bs-toggle="modal" data-bs-target="#upload-gallery-img-modal">
-                    Choose gallery img
-                </button>
-                <!-- Modal Choose gallery img-->
-                <div class="modal fade" id="upload-gallery-img-modal" tabindex="-1" aria-labelledby="upload-gallery-img-modal-label" aria-hidden="true">
-                    <div class="modal-dialog modal-fullscreen">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="upload-gallery-img-modal-label">Choose gallery img</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div></div>
-                            <div class="row">
-                                {{#each imgs}}
-                                    <div class="col-3 upload-gallery-img">
-                                        <img style="width: 100%;" src="\\{{this.path}}" alt="">
-                                    </div>
-                                {{/each}}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary close-upload-gallery-img" data-bs-dismiss="modal">Close</button>
-                            <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
-                            <button type="button" class="btn btn-primary import-gallery-img">Save</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="attribute" class="form-label" >Attribute</label>
-                    <div class="d-flex">
-                        <select style="width: 50%;" class="form-select me-3 select-attribute" aria-label="Default select example" name="attributeSelect">
-                            <option value="" selected>Add Attribute</option>
-                            {{#each attributes}}
+            <nav aria-label="breadcrumb" class="bg-white p-0">
+                <ol class="breadcrumb">
+                    <li class="cursor-pointer "><span class="border p-2 border-bottom-0 create-product__group-fill-information-active button-group-fill-information">Basic</span> </li>
+                    <li class="ms-2 cursor-pointer"><span class="border p-2 border-bottom-0 button-group-fill-information">Advanced</span> </li>
+                    <li class="ms-2 cursor-pointer"><span class="border p-2 border-bottom-0 button-group-fill-information">Import attribute type img</span> </li>
+                </ol>
+            </nav>
+            <form method="POST" action="/admin/product" enctype="multipart/form-data" class="form-group-fill-information" >
+                <div class="group-fill-information">
+                    <div class="mb-3">
+                        <label for="collection" class="form-label" >collection</label>
+                        <select class="form-select" aria-label="Default select example" name="nameCollection">
+                            {{#each collections}}
                                 <option value="{{this.name}}">{{this.name}}</option>
                             {{/each}}
                         </select>
-                        <div class="btn btn-primary " id="add-attribute-product">Apply</div>
                     </div>
-                    {{#each attributes}}
-                        <div class="wrapped-add-attribute {{this.name}} visually-hidden border border-secondary p-1 my-2">
-                            <div class="d-flex mt-3 align-items-center justify-content-between wrapper-attribute-name">
-                                <p class="label-name-attribute text-capitalize">{{this.name}}</p>
-                                <p class="btn btn-danger btn-remove-attribute {{this.name}}" data={{this.name}}>Remove</p>
+                    <div class="mb-3">
+                        <label for="title" class="form-label" >Title</label>
+                        <input type="text" class="form-control" name='title' id="title" >
+                    </div>
+                    <div class="input-img" ></div>
+                    <!-- Button trigger modal-product img -->
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#upload-img-modal">
+                        Choose image
+                    </button>
+
+                    <!-- Modal choose product img -->
+                    <div class="modal fade" id="upload-img-modal" tabindex="-1" aria-labelledby="upload-imgLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen" >
+                            <div class="modal-content" >
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="upload-imgLabel">Choose Img</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <ul class="list-group border wrapper-item-attribute-element border-secondary list-group-horizontal p-1">
-                                {{#each this.arrayElement}}
-                                    <li class="list-group-item attribute-element-added mb-3 visually-hidden btn">{{this.name}}</li>
-                                {{/each}}
-                            </ul>
-                            <div class="d-flex my-3 justify-content-between">
-                                <div class="btn btn-secondary clear-all-attribute-element">Clear All</div>
-                                <!-- Button trigger modal add attribute element-->
-                               <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Add
-                                    </button>
-                                    <div class="dropdown-menu wrapper-item-attribute-element-dropdown" aria-labelledby="dropdownMenuButton">
-                                        {{#each this.arrayElement}}
-                                            <a class="dropdown-item btn add-attribute-element-dropdown" >{{this.name}}</a>
-                                        {{/each}}
-                                    </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    {{#each imgs}}
+                                        <div class="col-3 upload-img">
+                                            <img style="width: 100%;" src="\\{{this.path}}" alt="">
+                                        </div>
+                                    {{/each}}
                                 </div>
-                                <div class="btn btn-secondary add-all-attribute-element">Add All</div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary close-upload-img" data-bs-dismiss="modal">Close</button>
+                                <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
+                                <button type="button" class="btn btn-primary import-img">Save</button>
+                            </div>
                             </div>
                         </div>
-                    {{/each}}
+                    </div>
+                    <!-- Button upload gallery img modal -->
+                    <div class="input-gallery-img"></div>
+                    <button type="button" class="btn btn-primary d-block mb-3 btn-gallery-img" data-bs-toggle="modal" data-bs-target="#upload-gallery-img-modal">
+                        Choose gallery img
+                    </button>
+                    <!-- Modal Choose gallery img-->
+                    <div class="modal fade" id="upload-gallery-img-modal" tabindex="-1" aria-labelledby="upload-gallery-img-modal-label" aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="upload-gallery-img-modal-label">Choose gallery img</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div></div>
+                                <div class="row">
+                                    {{#each imgs}}
+                                        <div class="col-3 upload-gallery-img">
+                                            <img style="width: 100%;" src="\\{{this.path}}" alt="">
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary close-upload-gallery-img" data-bs-dismiss="modal">Close</button>
+                                <a class="btn btn-primary" target="_blank" href="/admin/upload-img">add img</a>
+                                <button type="button" class="btn btn-primary import-gallery-img">Save</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="attribute" class="form-label" >Attribute</label>
+                        <div class="d-flex">
+                            <select style="width: 50%;" class="form-select me-3 select-attribute" aria-label="Default select example" name="attributeSelect">
+                                <option value="" selected>Add Attribute</option>
+                                {{#each attributes}}
+                                    <option value="{{this.name}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                            <div class="btn btn-primary " id="add-attribute-product">Apply</div>
+                        </div>
+                        {{#each attributes}}
+                            <div class="wrapper-add-attribute {{this.name}} visually-hidden border border-secondary p-1 my-2" data-index={{@index}} data-type={{this.type}} data-name={{this.name}}>
+                                <div class="d-flex mt-3 align-items-center justify-content-between wrapper-attribute-name">
+                                    <p class="label-name-attribute text-capitalize" data-type={{this.type}}>{{this.name}}</p>
+                                    <p class="btn btn-danger btn-remove-attribute {{this.name}}" data={{this.name}}>Remove</p>
+                                </div>
+                                <ul class="list-group border wrapper-item-attribute-element border-secondary list-group-horizontal p-1">
+                                    {{#each this.arrayElement}}
+                                        <li class="list-group-item attribute-element-added mb-3 visually-hidden btn" data-name={{this.name}}>{{this.name}}</li>
+                                    {{/each}}
+                                </ul>
+                                <div class="d-flex my-3 justify-content-between">
+                                    <div class="btn btn-secondary clear-all-attribute-element">Clear All</div>
+                                    <!-- Button trigger modal add attribute element-->
+                                <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Add
+                                        </button>
+                                        <div class="dropdown-menu wrapper-item-attribute-element-dropdown" aria-labelledby="dropdownMenuButton">
+                                            {{#each this.arrayElement}}
+                                                <a class="dropdown-item btn add-attribute-element-dropdown" >{{this.name}}</a>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                    <div class="btn btn-secondary add-all-attribute-element">Add All</div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <div class="create-product__add-price-img border-bottom mb-2 d-flex align-items-center">
+                        <div class="btn btn-primary mb-2 border-bottom cursor-pointer create-product__save-information">Save
+                        </div>
+                        <div class="load-when-save visually-hidden mb-2 ms-2">
+                            <div class="spinner-grow spinner-grow-sm" role="status"></div>
+                            <div class="spinner-grow spinner-grow-sm" role="status"></div>
+                            <div class="spinner-grow spinner-grow-sm" role="status"></div>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary" >Submit</button>
+                <div class="group-fill-infomation-advanced visually-hidden group-fill-information">
+                    <div class="select-product-by-attribute d-flex justify-content-between">
+                        <label style="line-height: 38px;">Product by attribute</label>
+                        <select style="width: 30%;" class="form-select" aria-label="Default select example " >
+                            <option>No have attribute</option>
+                        </select>
+                        <button class="btn btn-primary button-create-advanced-product-by-attribute">Aplly</button>
+                    </div>
+                    <div class="wrapper-fill-information-advanced">
+
+                    </div>
+                    
+                </div>
+                <div class="group-fill-information group-fill-infomation-add-img-element-attribute visually-hidden">
+                    img attribute element
+                    <div class="wrapper-group-fill-infomation-add-img-element-attribute"></div>
+                    <!-- Modal choose img avanced information-->
+
+                    <div class="modal fade" id="imgAvancedModal" tabindex="-1" aria-labelledby="imgAvancedModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-fullscreen">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imgAvancedModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close img-avanced-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    {{#each imgs}}
+                                        <div class="col-3 attribute-advanced-img">
+                                            <img style="width: 100%;" src="\\{{this.path}}" alt="">
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary import-attribute-avanced-img">Save changes</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
+            
+            <button type="submit" class="btn btn-primary mt-3 submit-form-create-product" >Submit</button>
         </div>
         </div>
     </div>
 </div>
+
 <script>
     const addAttribute = document.querySelector('#add-attribute-product');
-    const wrappedAddAttribute = document.querySelectorAll('.wrapped-add-attribute');
+    const wrapperAddAttribute = document.querySelectorAll('.wrapper-add-attribute');
     const removeAttribute = document.querySelectorAll('.btn-remove-attribute');
     const clearAllAttributeElement = document.querySelectorAll('.clear-all-attribute-element');
     const addAllAttributeElement = document.querySelectorAll('.add-all-attribute-element');
@@ -148,19 +202,32 @@
 
     const wrapperAttributeName = document.querySelectorAll('.wrapper-attribute-name');
     const labelNameAttribute = document.querySelectorAll('.label-name-attribute');
+    const buttonGroupFillInformation = document.querySelectorAll('.button-group-fill-information');
+    const groupFillInformation = document.querySelectorAll('.group-fill-information');
+    const saveInformationBasic = document.querySelector('.create-product__save-information');
+    const groupFillInformationAdvanced = document.querySelector('.group-fill-information-advanced');
+    const selectProductByAttribute = document.querySelector('.select-product-by-attribute select');
+    const buttonCreateAdvanced = document.querySelector('.button-create-advanced-product-by-attribute');
+    const wrapperFillInformationAdvanced = document.querySelector('.wrapper-fill-information-advanced');
+    const loadWhenSave = document.querySelector('.load-when-save');
+    const wrapperAttributeTypeImg = document.querySelectorAll('.wrapper-add-attribute[data-type="img"]');
+    const groupFillInformationAddImg = document.querySelector('.wrapper-group-fill-infomation-add-img-element-attribute')
     //handle show type attribute
     addAttribute.onclick = function(){
         const selectAttribute = document.querySelector('.select-attribute').value;
-        wrappedAddAttribute.forEach((element,index) => {
+        wrapperAddAttribute.forEach((element,index) => {
             if(element.classList.contains(selectAttribute)){
                 if(wrapperAttributeName[index].querySelector('input') == null){
-                console.log('click')
-
                     var inputNameAttribute = document.createElement('INPUT');
                     inputNameAttribute.name = `attribute[${index}][name]`;
                     inputNameAttribute.type = 'hidden';
                     inputNameAttribute.value = labelNameAttribute[index].textContent;
                     wrapperAttributeName[index].appendChild(inputNameAttribute);
+                    var inputTypeAttribute = document.createElement('INPUT');
+                    inputTypeAttribute.name = `attribute[${index}][type]`;
+                    inputTypeAttribute.type = 'hidden';
+                    inputTypeAttribute.value = labelNameAttribute[index].getAttribute('data-type');
+                    wrapperAttributeName[index].appendChild(inputTypeAttribute);
                     element.classList.remove('visually-hidden');
                 }
             }
@@ -169,8 +236,10 @@
     // remove type attribute
     removeAttribute.forEach((element,index) => {
         element.onclick = function() {
-            wrappedAddAttribute[index].classList.add('visually-hidden');
-            wrapperAttributeName[index].querySelector('input').remove();
+            wrapperAddAttribute[index].classList.add('visually-hidden');
+            wrapperAttributeName[index].querySelectorAll('input').forEach(item =>{
+                item.remove();
+            })
         }
     })
     //handle add all element attribute
@@ -207,7 +276,7 @@
         }
     })
     //handle add signle attribute element
-    wrappedAddAttribute.forEach((element,index) => {
+    wrapperAddAttribute.forEach((element,index) => {
         element.querySelectorAll('.add-attribute-element-dropdown').forEach((item,index2) => {
             item.onclick = function() {
                 if(element.querySelectorAll('.attribute-element-added')[index2].querySelector('input') == null){
@@ -221,5 +290,79 @@
             }
         })
     })
+    //change information product
+    buttonGroupFillInformation.forEach((element,index) =>{
+        element.onclick = function(){
+            document.querySelector('.create-product__group-fill-information-active').classList.remove('create-product__group-fill-information-active');
+            element.classList.add('create-product__group-fill-information-active');
+            document.querySelectorAll('.group-fill-information').forEach(item => {
+                item.classList.add('visually-hidden');
+            })
+            groupFillInformation[index].classList.remove('visually-hidden');
+        }
+    })
+    //save information basic product
+    let htmlAttributeTypeImg = '';
+    saveInformationBasic.onclick = function(){
+        const wrapperAddAttributeSelected = document.querySelectorAll('.wrapper-add-attribute:not(.visually-hidden) .label-name-attribute');
+        let htmlSelect = '<option hidden>Choose attribute</option>';
+        wrapperAddAttributeSelected.forEach(item =>{
+            htmlSelect = htmlSelect.concat(`<option value=${item.textContent}>${item.textContent}</option>`)
+        })
+        selectProductByAttribute.innerHTML = htmlSelect;
+        loadWhenSave.classList.remove('visually-hidden');
+        htmlAttributeTypeImg = '';
+        wrapperAttributeTypeImg.forEach((element,index) => { 
+            element.querySelectorAll('.attribute-element-added').forEach((item,index1) => {
+                htmlAttributeTypeImg = htmlAttributeTypeImg.concat(`
+                    <h3>${item.getAttribute('data-name')}<h3>
+                    <label>Choose image</label>
+                    <img data-bs-toggle="modal" data-bs-target="#imgAvancedModal" data-bs-index=${index1} class="cursor-pointer choose-img-information-advanced" src="/img/none_img.png" style="height:100px">
+                    <input name=attribute[${parseInt(element.getAttribute('data-index'))}][arrayElement][${index1}][img] type="hidden" class="input-url-img-attriibute">
+                `)
+            }) 
+        });
+        groupFillInformationAddImg.innerHTML = htmlAttributeTypeImg;
+        setTimeout(function(){ 
+            loadWhenSave.classList.add('visually-hidden');
+         }, 1000);
+    }
+    //create advanced product by attribute
+    let htmlWrapperFillInformationAvanced = '';
+    buttonCreateAdvanced.onclick = function(e){
+        e.preventDefault();
+        document.querySelectorAll('.wrapper-add-attribute').forEach((item,index0) => {
+            if(selectProductByAttribute.value == item.querySelector('.label-name-attribute').textContent){
+                htmlWrapperFillInformationAvanced = '';
+                item.querySelectorAll('.attribute-element-added input').forEach((element, index) => {
+                    htmlWrapperFillInformationAvanced = htmlWrapperFillInformationAvanced.concat(`
+                        <h3>${element.value}</h3>
+                        <label>Price</label>
+                        <input name=attribute[${index0}][arrayElement][${index}][realPrice] type="text">
+                        <label>Sell Price</label>
+                        <input name=attribute[${index0}][arrayElement][${index}][sellPrice] type="text">
+                        `)
+                })
+                wrapperFillInformationAdvanced.innerHTML = htmlWrapperFillInformationAvanced;
+            }
+        })
+    }
+    // tranfer variable on modal choose img attribute avanced
+    var imgAvancedModal = document.getElementById('imgAvancedModal')
+    imgAvancedModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var index = button.getAttribute('data-bs-index')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    document.querySelector('.import-attribute-avanced-img').setAttribute('data-index',index);
+    })
+    //submit form creat product
+    document.querySelector('.submit-form-create-product').onclick = function(){
+        document.querySelector('form.form-group-fill-information').submit();
+    }
 </script>
   

@@ -8,17 +8,21 @@ const Product = new Schema({
     nameCollection: { type:String },
     title: { type: String },
     description: { type: String },
-    realPrice: { type: Number },
-    sellPrice: { type: Number },
+    minPrice: { type: Number },
+    maxPrice: { type: Number },
     urlImg: { type: String },
     urlImgGallery: { type: Array },
     slug: { type: String, slug: "title" },
     attribute: [
         {
             name: {type: String},
+            type: {type: String},
             arrayElement: [
                 {
                     name:{type: String},
+                    realPrice: { type: Number },
+                    sellPrice: { type: Number },
+                    img: { type: String },
                 }
             ]
         }

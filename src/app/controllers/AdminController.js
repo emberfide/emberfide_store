@@ -91,10 +91,24 @@ class AdminController{
 
     //POST admin/product
     createProduct(req, res){
+        const attributeHavePrice = req.body.attribute.find(item => item.arrayElement[0].realPrice );
+        let minPrice = attributeHavePrice.arrayElement[0].sellPrice;
+        let maxPrice = attributeHavePrice.arrayElement[0].sellPrice;
+        attributeHavePrice.arrayElement.forEach(element => {
+            if(minPrice >= element.sellPrice){
+                minPrice = element.sellPrice;
+            }
+            if(maxPrice <= element.sellPrice){
+                maxPrice = element.sellPrice;
+            }
+        });
+        req.body.minPrice = minPrice;
+        req.body.maxPrice = maxPrice;
         const product = new Product(req.body);
         product.save()
             .then(() => res.redirect('/admin/product'))
-        // res.json(req.body)
+        
+        // res.json(req.body);
     }
     //POST admin/upload-img
     uploadImg(req, res){
