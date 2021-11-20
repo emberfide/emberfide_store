@@ -9,6 +9,11 @@ router.post('/reduce', cartController.reduce);
 router.post('/quantity-change', cartController.quantityChange);
 router.post('/remove-product-cart', cartController.removeProductCart);
 router.get('/json', cartController.json);
+
+router.get('/page-cart/quantity-plus/:index', cartController.pageCartPlus);
+router.get('/page-cart/quantity-reduce/:index', cartController.pageCartReduce);
+router.get('/page-cart/quantity-input/:index/:quantity', cartController.pageCartInput);
+
 router.get('/', cartController.index);
 
 

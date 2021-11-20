@@ -14,9 +14,6 @@
 }
 
 .card {
-    margin: auto;
-    max-width: 950px;
-    width: 90%;
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 1rem;
     border: transparent
@@ -76,8 +73,9 @@
 
 .main {
     margin: 0;
-    padding: 2vh 0;
-    width: 100%
+    padding: 4vh 0;
+    width: 100%;
+    min-height: 270px;
 }
 
 .col-2,
@@ -99,7 +97,13 @@ a {
 // }
 
 .back-to-shop {
-    margin-top: 4.5rem
+    margin-top: 2rem;
+    text-align: center;
+    font-weight: bold;
+    color: #4ab742;
+}
+.back-to-shop:hover{
+    color: #fff;
 }
 
 h5 {
@@ -146,22 +150,12 @@ input:focus::-webkit-input-placeholder {
     transition: none
 }
 
-.btn:hover {
-    color: white
-}
-
-a {
-    color: black
-}
-
-a:hover {
-    color: black;
-    text-decoration: none
-}
-
 #code {
     background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253), rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
     background-repeat: no-repeat;
     background-position-x: 95%;
     background-position-y: center
+}
+.btn-check-out:hover{
+    color: #000!important;
 }

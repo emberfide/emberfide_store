@@ -14,6 +14,8 @@ class CartController{
                     req.session.cart = [];
                     product.count = parseInt(req.body.quantity);
                     product.chooseAttribute = req.body.chooseAttribute;
+                    req.body.price.sellPrice = parseFloat(req.body.price.sellPrice);
+                    req.body.price.realPrice = parseFloat(req.body.price.realPrice);
                     product.price = req.body.price;
                     product.urlImgChooseAttribute  = req.body.urlImgChooseAttribute;
                     req.session.cart.push(product);
@@ -35,6 +37,8 @@ class CartController{
                     if(!checkProduct){
                         product.count = parseInt(req.body.quantity);
                         product.chooseAttribute = req.body.chooseAttribute;
+                        req.body.price.sellPrice = parseFloat(req.body.price.sellPrice);
+                        req.body.price.realPrice = parseFloat(req.body.price.realPrice);
                         product.price = req.body.price;
                         req.session.cart.push(product);
                         product.urlImgChooseAttribute  = req.body.urlImgChooseAttribute;
@@ -65,6 +69,18 @@ class CartController{
     }
     json(req,res,next){
         res.json(res.locals.cart)
+    }
+    pageCartPlus(req,res,next){
+        res.locals.cart[req.params.index].count++;
+        res.redirect('back');
+    }
+    pageCartReduce(req,res,next){
+        res.locals.cart[req.params.index].count--;
+        res.redirect('back');
+    }
+    pageCartInput(req,res,next){
+        res.locals.cart[req.params.index].count = parseInt(req.params.quantity);
+        res.redirect('back');
     }
 }
 

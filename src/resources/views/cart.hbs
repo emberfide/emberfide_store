@@ -1,5 +1,5 @@
-<div class="container">
-    <div class="card mt-5">
+<div class="container-fluid">
+    <div class="card mt-5 page-card">
         <div class="row">
             <div class="col-md-8 cart">
                 <div class="title">
@@ -7,44 +7,105 @@
                         <div class="col">
                             <h4><b>Shopping Cart</b></h4>
                         </div>
-                        <div class="col align-self-center text-right text-muted">3 items</div>
+                        <div class="col align-self-center text-center text-muted">{{totalQuantityCart}} items</div>
                     </div>
                 </div>
                 {{#each cart}}
                     <div class="row border-top border-bottom">
-                        <div class="row main align-items-center">
-                            <div class="col-2"><img class="img-fluid" src={{this}}></div>
-                            <div class="col">
-                                <div class="row text-muted">Shirt</div>
-                                <div class="row">Cotton T-shirt</div>
+                        <div class="row main">
+                            <div class="col-4"><img class="img-fluid" src={{this.urlImgChooseAttribute}}></div>
+                            <div class="col-7 d-flex flex-column justify-content-between">
+                                <div class="">
+                                    <p class="text-uppercase fs-5 m-0" style="line-height: 1.6;">{{this.title}}</p>
+                                    {{#each this.chooseAttribute}}
+                                        <p class="m-0 text-uppercase"><span class="fw-bold">{{@key}}</span> : <span>{{this}}</span></p>
+                                    {{/each}}
+                                </div>
+                                <div class="my fs-5">&dollar;{{this.price.sellPrice}}</div>
+                                <ul class="list-group list-group-horizontal my ">
+                                    <li class="list-group-item col-3 text-center cursor-pointer page-cart__quantity-reduce">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                        <path d="M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z"></path>
+                                        </svg>   
+                                    </li>
+                                    <li class="list-group-item col-3 p-0">
+                                        <input type="number" name="quantity" class="page-cart__quantity-input form-control border-0 h-100 text-center" value={{this.count}} min="1">
+                                    </li>
+                                    <li class="list-group-item col-3 text-center cursor-pointer page-cart__quantity-plus">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"></path>
+                                        </svg>
+                                    </li>
+                                </ul>
+                                <div class=" page-card__total-price-item fs-5 "> <span class="fw-bold">Total:</span> &dollar;{{mutiple this.count this.price.sellPrice}}</div>
                             </div>
-                            <div class="col"> <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a> </div>
-                            <div class="col">&euro; 44.00 <span class="close">&#10005;</span></div>
+                            <div class="col-1">X</div>
                         </div>
                     </div>
                 {{/each}}
-                <div class="back-to-shop"><a href="#">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+                <form name="page-cart__plus-form" method="GET"></form>
+                <form name="page-cart__reduce-form" method="GET"></form>
+                <form name="page-cart__input-form" method="GET"></form>
             </div>
             <div class="col-md-4 summary">
                 <div>
                     <h5><b>Summary</b></h5>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col" style="padding-left:0;">ITEMS 3</div>
-                    <div class="col text-right">&euro; 132.00</div>
+                <div class="row fw-bold fs-6">
+                    <div class="col" style="padding-left:0;">Subtotal:</div>
+                    <div class="col text-right">&dollar; {{totalPriceCart}}</div>
                 </div>
-                <form>
-                    <p>SHIPPING</p> <select>
-                        <option class="text-muted">Standard-Delivery- &euro;5.00</option>
-                    </select>
-                    <p>GIVE CODE</p> <input id="code" placeholder="Enter your code">
-                </form>
-                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="page-cart__shipping row fw-bold fs-6 mt-3">
+                    <p class="col" style="padding-left:0;">Shipping</p>
+                    <p class="value-shipping col">&dollar; {{valueShipping}}</p>
+                </div>
+                <div class="row fw-bold fs-6 pt-3" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                     <div class="col">TOTAL PRICE</div>
-                    <div class="col text-right">&euro; 137.00</div>
-                </div> <button class="btn">CHECKOUT</button>
+                    <div class="col text-right">&dollar; {{sumPrice totalPriceCart valueShipping}}</div>
+                </div> 
+                <a href="/check-out" class="btn w-100 text-light btn-check-out mt-3" style="line-height:38px; background-color: #4ab742;height:50px">
+                    <svg class="align-text-top" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                    </svg>
+                    CHECKOUT
+                </a>
+                <div class="back-to-shop"><a href="#" class="">CONTINUE SHOPPING</a></div>
+
             </div>
         </div>
     </div>
 </div>
+<script>
+    const pageCartQuantityReduce = document.querySelectorAll('.page-cart__quantity-reduce');
+    const pageCartQuantityPlus = document.querySelectorAll('.page-cart__quantity-plus');
+    const pageCartQuantityInput = document.querySelectorAll('.page-cart__quantity-input');
+    const pageCartPlusForm = document.querySelector('form[name="page-cart__plus-form"]');
+    const pageCartReduceForm = document.querySelector('form[name="page-cart__reduce-form"]');
+    const pageCartInputForm = document.querySelector('form[name="page-cart__input-form"]');
+    pageCartQuantityReduce.forEach((item, index) => {
+        item.onclick = function(){
+            if(pageCartQuantityInput[index].value > 1){
+                pageCartReduceForm.action = `/cart/page-cart/quantity-reduce/${index}`;
+                pageCartReduceForm.submit();
+            }
+        }
+    })
+    pageCartQuantityPlus.forEach((item,index) => {
+        item.onclick = function(){
+            pageCartPlusForm.action = `/cart/page-cart/quantity-plus/${index}`;
+            pageCartPlusForm.submit();
+        }
+    })
+    pageCartQuantityInput.forEach((item,index) => {
+        item.onchange = function(){
+            if(item.value >= 1){
+                pageCartInputForm.action = `cart/page-cart/quantity-input/${index}/${item.value}`;
+                pageCartInputForm.submit();
+            }
+            else{
+                location.reload();
+            }
+        }
+    })
+</script>

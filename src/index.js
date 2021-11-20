@@ -60,6 +60,26 @@ app.engine('hbs', handlebars({
     sum: (a, b) => a+b,
 	compare: (a,b) => a == b,
 	valueObject: (object) => Object.values(object),
+	mutiple: (a,b) =>  {
+		return (a*b).toFixed(2);
+	},
+	totalPrice: (arrayCart) => {
+		let totalPrice = 0;
+		arrayCart.forEach(item => {
+			totalPrice += item.count*item.price.sellPrice;
+		})
+		return totalPrice;
+	},
+	checkPriceForShipping: (arrayCart) => {
+		let totalPrice = 0;
+		arrayCart.forEach(item => {
+			totalPrice += item.count*item.price.sellPrice;
+		})
+		return totalPrice > 99;
+	},
+	sumPrice: (a, b) => {
+		return (parseFloat(a) + parseFloat(b)).toFixed(2);
+	}
 }
 }));
 app.set('view engine', 'hbs');

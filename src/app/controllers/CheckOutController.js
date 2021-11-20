@@ -3,7 +3,7 @@ const { mutipleMongooesToObject, mongooesToObject } = require('../../untill/mong
 
 class CheckOutController{
     checkOut(req, res){
-        res.render('checkOut')
+        res.render('checkOut',{layout:'checkOut'});
     }
 }
 
